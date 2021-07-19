@@ -1,36 +1,32 @@
-let http = require('http');
-const { usersController } = require('./usersControllers');
+const users = require('./users-router')
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser')
 
-process.on('unhandledRejection', function(reason, p){
-   console.log(reason, p); 
-});
-const cros = (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Request-Method', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
-    res.setHeader('Access-Control-Allow-Headers', '*');
-    if (req.method === 'OPTIONS') {
-        res.writeHead(200);
-        res.end();
-        return true;
-    }
-    return false;
-}
 
-let server = http.createServer((req, res) => {
-    console.log('some request');
+const app = express();
+const port = 7645;
 
-    if (cros(req, res)) return;
+app.use(cors());
 
-    switch (req.url) {
-        case "/users": usersController(req, res);
-            break;
-        case "/lessons":
-            res.write('tasks');
-            break;
-        default:
-            res.write('Page not found');
-    }
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use('/users', users);
+
+app.get('/tasks', async (req, res) => {
+    res.send('Tasks');
+})
+
+app.use((req, res)=>{
+    res.send(404);
 });
 
-server.listen(7645);
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
+
+
+// process.on('unhandledRejection', function (reason, p) {
+//     console.log(reason, p);
+// });
