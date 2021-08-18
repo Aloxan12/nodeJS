@@ -1,4 +1,4 @@
-const { getUsers, addUsers } = require('./reposytory');
+const { getUsers, addUsers , deleteUser} = require('./reposytory');
 
 const express = require('express');
 const router = express.Router();
@@ -28,6 +28,13 @@ router.get('/:id', async (req, res) => {
     res.send(404);
   }
 });
+
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  let users = await deleteUser(id);
+  res.send(204);  
+});
+
 router.post('/', async (req, res) => {
   let name = req.body.name;
     let result = await addUsers(name);

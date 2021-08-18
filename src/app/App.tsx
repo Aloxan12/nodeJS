@@ -11,6 +11,7 @@ type UsersType = {
 const App: React.FC = () => {
     const userNameRef = useRef<HTMLInputElement | null>(null)
     const [users, setUsers] = useState<any[]>([])
+    const [value, setValue] = useState<string>('')
     let getUsers = () => {
         axios.get('http://localhost:7645/users')
             .then(res =>
@@ -26,11 +27,19 @@ const App: React.FC = () => {
             getUsers();
         })
     }
+    const deleteUsers =(id: string)=>{
+        axios.delete(`http://localhost:7645/users/${id}`,).then(res=>{
+            getUsers();
+        })
+    }
+    let onChange =(e:ChangeEvent<HTMLInputElement>)=>{
+        setValue(e.currentTarget.value)
+    }
     return (
         <div className="App">
-            <input ref={userNameRef}/>
+            <input onChange={onChange} ref={userNameRef}/>
             <button onClick={createUsers}> add User</button>
-            {users.map(u => <div>{u.name}</div>)}
+            {users.map(u => <div>{u.name}<button onClick={()=>deleteUsers(u._id)}>x</button></div>)}
         </div>
     )
 }
