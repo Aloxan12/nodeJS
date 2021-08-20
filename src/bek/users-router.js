@@ -1,4 +1,4 @@
-const { getUsers, addUsers , deleteUser} = require('./reposytory');
+const { getUsers, addUsers , deleteUser, getUser, updateUser} = require('./reposytory');
 
 const express = require('express');
 const router = express.Router();
@@ -10,18 +10,12 @@ router.use(function timeLog(req, res, next) {
 });
 
 router.get('/', async (req, res) => {
-    let users = await getUsers();
-
-    if(!!req.query.search){
-      users = users.filter(u=> u.name.indexOf(req.query.search)> -1)
-    }
-
+    let users = await getUsers(req.query.search);
     res.send(users);
 });
 router.get('/:id', async (req, res) => {
   const userId = req.params.id;
-  let users = await getUsers();
-  let user = users.find(u=> u.id == userId)
+  let users = await getUser(userId);
   if(user){
     res.send(user);
   }else{
@@ -37,8 +31,14 @@ router.delete('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   let name = req.body.name;
-    let result = await addUsers(name);
+    await addUsers(name);
     res.send({ succses: true });
 });
 
+router.put('/', async (req, res) => {
+  let name = req.body.name;
+  let id = req.body.id;
+    await updateUser(id, name);
+    res.send({ succses: true });
+});
 module.exports = router;

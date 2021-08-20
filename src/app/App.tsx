@@ -3,17 +3,17 @@ import './App.css'
 import axios from "axios";
 
 type UsersType = {
-    id: number,
-    name: string
+    _id: string,
+    name: string,
 }
 
 
 const App: React.FC = () => {
     const userNameRef = useRef<HTMLInputElement | null>(null)
-    const [users, setUsers] = useState<any[]>([])
-    const [value, setValue] = useState<string>('')
+    const [users, setUsers] = useState<UsersType[]>([])
+    const [editMode, setEditMode] = useState<boolean>(true)
     let getUsers = () => {
-        axios.get('http://localhost:7645/users')
+        axios.get('http://localhost:7645/users' + window.location.search)
             .then(res =>
                 setUsers(res.data)
             )
@@ -22,24 +22,41 @@ const App: React.FC = () => {
         getUsers();
     }, [])
 
-    const createUsers =()=>{
-        axios.post('http://localhost:7645/users', {name: userNameRef.current?.value}).then(res=>{
+    const createUsers = () => {
+        axios.post('http://localhost:7645/users', {name: userNameRef.current?.value}).then(res => {
             getUsers();
         })
     }
-    const deleteUsers =(id: string)=>{
-        axios.delete(`http://localhost:7645/users/${id}`,).then(res=>{
+    const updateUsers = (id:  string, name: string) => {
+        axios.put('http://localhost:7645/users', {name, id}).then(res => {
             getUsers();
         })
     }
-    let onChange =(e:ChangeEvent<HTMLInputElement>)=>{
-        setValue(e.currentTarget.value)
+    const deleteUsers = (id: string) => {
+        axios.delete(`http://localhost:7645/users/${id}`,).then(res => {
+            getUsers();
+        })
+    }
+    let onChange = (e: ChangeEvent<HTMLInputElement>) => {
+
     }
     return (
         <div className="App">
-            <input onChange={onChange} ref={userNameRef}/>
+            <input ref={userNameRef}/>
             <button onClick={createUsers}> add User</button>
-            {users.map(u => <div>{u.name}<button onClick={()=>deleteUsers(u._id)}>x</button></div>)}
+            {users.map(u => <div key={u._id}>
+                {
+                    editMode
+                    ? <span onDoubleClick={()=> setEditMode(false)}>{u.name}</span>
+                    :<input
+                            defaultValue={u.name}
+                            onBlur={(e) => {
+                                updateUsers(u._id, e.currentTarget.value);
+                                setEditMode(true)
+                            }}/>
+                }
+                <button onClick={() => deleteUsers(u._id)}>x</button>
+            </div>)}
         </div>
     )
 }
