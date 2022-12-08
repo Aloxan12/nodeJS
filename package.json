@@ -5,6 +5,10 @@
   "repository": "https://github.com/Aloxan12/nodeJS.git",
   "author": "Aloxan12 <kvakvaaak@mail.ru>",
   "license": "MIT",
+  "scripts": {
+    "watch": "tsc -w",
+    "dev": "nodemon --inspect dist/index.js"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "tsc": "^2.0.4"
