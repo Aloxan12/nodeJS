@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import './App.css'
 import axios from "axios";
 
@@ -37,9 +37,7 @@ const App: React.FC = () => {
             getUsers();
         })
     }
-    let onChange = (e: ChangeEvent<HTMLInputElement>) => {
 
-    }
     return (
         <div className="App">
             <input ref={userNameRef}/>

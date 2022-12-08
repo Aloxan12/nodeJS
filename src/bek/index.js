@@ -30,11 +30,11 @@ app.use((req, res)=>{
     res.send(404);
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+app.listen(process.env.PORT || port, () => {
+    console.log(`Example app listening at ${process.env.PORT}`)
 })
 
 
-// process.on('unhandledRejection', function (reason, p) {
-//     console.log(reason, p);
-// });
+process.on('unhandledRejection', function (reason, p) {
+    console.log(reason, p);
+});
