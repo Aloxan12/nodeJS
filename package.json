@@ -1,0 +1,11 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Aloxan12/nodeJS.git",
+  "author": "Aloxan12 <kvakvaaak@mail.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
