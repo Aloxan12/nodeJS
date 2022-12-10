@@ -1,6 +1,7 @@
 import express, {Request, Response} from 'express'
+
 const app = express()
-const port = 3005
+const port = process.env.PORT || 3005
 
 app.get('/', (req:Request, res:Response) => {
     let message = 'Hello World!!!!'
