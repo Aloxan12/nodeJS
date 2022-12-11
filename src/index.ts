@@ -18,6 +18,11 @@ app.get('/products', (req:Request, res:Response) => {
         res.send(products)
     }
 })
+app.post('/products', (req:Request, res:Response) => {
+    const mewProduct = {id: +(new Date), title: req.body.title}
+    products.push(mewProduct)
+    res.status(201)
+})
 
 app.get('/products/:productTitle', (req:Request, res:Response) => {
     let product = products.find((prod)=> prod.title === req.params.productTitle)
@@ -43,17 +48,17 @@ app.get('/addresses/:id', (req:Request, res:Response) => {
 
 
 app.delete('/products/:id', (req:Request, res:Response) => {
-    // for(let i = 0; i < products.length; i++){           #1
-    //     if(products[i].id === +req.params.id){
-    //         products.splice(i, 1);
-    //         res.send(201);
-    //         return;
-    //     }
-    // }
-    // res.send(404)
+    for(let i = 0; i < products.length; i++){           //#1
+        if(products[i].id === +req.params.id){
+            products.splice(i, 1);
+            res.send(201);
+            return;
+        }
+    }
+    return res.send(404)
 
-    const newPropucts = products.filter((prod)=> prod.id !== +req.params.id) //#2
-    return newPropucts.length < products.length ? res.send(201) : res.send(404)
+    // const newPropucts = products.filter((prod)=> prod.id !== +req.params.id) //#2 придумать как вернуть с кодом
+    // return newPropucts.length < products.length ? res.send(201) : res.send(404)
 })
 
 
