@@ -4,14 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3005;
+const products = [{ id: 1, title: 'bread' }, { id: 2, title: 'apple' }, { id: 3, title: 'orange' }];
+const addresses = [{ id: 1, value: 'Minsk' }, { id: 2, value: 'London' }, { id: 3, value: 'Grodno' }];
+const parserMiddleweare = (0, body_parser_1.default)();
+app.use(parserMiddleweare);
 app.get('/', (req, res) => {
     let message = 'Hello World!!!!';
     res.send(message);
 });
-const products = [{ id: 1, title: 'bread' }, { id: 2, title: 'apple' }, { id: 3, title: 'orange' }];
-const addresses = [{ id: 1, value: 'Minsk' }, { id: 2, value: 'London' }, { id: 3, value: 'Grodno' }];
 app.get('/products', (req, res) => {
     if (req.query.title) {
         res.send(products.filter(item => item.title.indexOf(req.query.title.toLocaleString()) > -1));
@@ -23,11 +26,21 @@ app.get('/products', (req, res) => {
 app.post('/products', (req, res) => {
     const mewProduct = { id: +(new Date), title: req.body.title };
     products.push(mewProduct);
-    res.status(201);
+    res.status(201).send(mewProduct);
 });
-app.get('/products/:productTitle', (req, res) => {
-    let product = products.find((prod) => prod.title === req.params.productTitle);
+app.get('/products/:id', (req, res) => {
+    let product = products.find((prod) => prod.id === +req.params.id);
     if (product) {
+        res.send(product);
+    }
+    else {
+        res.send(404);
+    }
+});
+app.put('/products/:id', (req, res) => {
+    let product = products.find((prod) => prod.id === +req.params.id);
+    if (product) {
+        product.title = req.body.title;
         res.send(product);
     }
     else {
