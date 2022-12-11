@@ -13,7 +13,12 @@ app.get('/', (req, res) => {
 const products = [{ id: 1, title: 'bread' }, { id: 2, title: 'apple' }, { id: 3, title: 'orange' }];
 const addresses = [{ id: 1, value: 'Minsk' }, { id: 2, value: 'London' }, { id: 3, value: 'Grodno' }];
 app.get('/products', (req, res) => {
-    res.send(products);
+    if (req.query.title) {
+        res.send(products.filter(item => item.title.indexOf(req.query.title.toLocaleString()) > -1));
+    }
+    else {
+        res.send(products);
+    }
 });
 app.get('/products/:productTitle', (req, res) => {
     let product = products.find((prod) => prod.title === req.params.productTitle);
@@ -31,6 +36,15 @@ app.get('/addresses/:id', (req, res) => {
     let address = addresses.find((address) => address.id === +req.params.id);
     if (address) {
         res.send(address);
+    }
+    else {
+        res.send(404);
+    }
+});
+app.delete('/products/:id', (req, res) => {
+    let product = products.find((prod) => prod.id === +req.params.id);
+    if (product) {
+        res.send(product);
     }
     else {
         res.send(404);
