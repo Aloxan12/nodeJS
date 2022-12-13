@@ -8,7 +8,6 @@ export const addressesRouter = Router({})
 addressesRouter.get('/', (req:Request, res:Response) => {
     res.send(addresses)
 })
-
 addressesRouter.get('/:id', (req:Request, res:Response) => {
     let address = addresses.find((address)=> address.id === +req.params.id)
     if(address) {
