@@ -12,7 +12,7 @@ productRouter.get('/', (req:Request, res:Response) => {
     res.send(foundProducts)
 })
 productRouter.get('/:id', (req:Request, res:Response) => {
-    let product = products.find((prod)=> prod.id === +req.params.id)
+    let product = productsRespository.getProductById(+req.params.id)
     if(product) {
         res.send(product)
     }else {

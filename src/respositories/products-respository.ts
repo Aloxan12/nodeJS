@@ -9,6 +9,10 @@ export const productsRespository = {
             return products
         }
     },
+    getProductById(id: number){
+        let product = products.find((prod)=> prod.id === id)
+        return product
+    },
     createProduct(title: string){
         const newProduct = {
             id: +(new Date), 
