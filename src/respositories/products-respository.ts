@@ -42,4 +42,3 @@ export const productsRespository = {
         // return newPropucts.length < products.length ? res.send(201) : res.send(404)
     }
 }
-// dev
