@@ -37,8 +37,9 @@ export const productsRespository = {
             }
         }
         return false
-        
+
         // const newPropucts = products.filter((prod)=> prod.id !== +req.params.id) //#2 придумать как вернуть с кодом
         // return newPropucts.length < products.length ? res.send(201) : res.send(404)
     }
 }
+// dev
