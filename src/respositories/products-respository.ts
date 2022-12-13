@@ -8,5 +8,12 @@ export const productsRespository = {
         }else {
             return products
         }
+    },
+    createProduct(title: string){
+        const newProduct = {
+            id: +(new Date), 
+            title: title}
+        products.push(newProduct)
+        return newProduct
     }
 }

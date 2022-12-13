@@ -9,7 +9,6 @@ export const productRouter = Router({})
 
 productRouter.get('/', (req:Request, res:Response) => {
     const foundProducts = productsRespository.findProduct(req.query.title?.toString())
-
     res.send(foundProducts)
 })
 productRouter.get('/:id', (req:Request, res:Response) => {
@@ -21,9 +20,8 @@ productRouter.get('/:id', (req:Request, res:Response) => {
     }
 })
 productRouter.post('/', (req:Request, res:Response) => {
-    const mewProduct = {id: +(new Date), title: req.body.title}
-    products.push(mewProduct)
-    res.status(201).send(mewProduct)
+    const newProduct = productsRespository.createProduct(req.body.title)
+    res.status(201).send(newProduct)
 })
 productRouter.put('/:id', (req:Request, res:Response) => {
     let product = products.find((prod)=> prod.id === +req.params.id)
