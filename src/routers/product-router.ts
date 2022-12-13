@@ -1,5 +1,6 @@
 import {Request, Response} from 'express'
 import { Router } from "express";
+import { productsRespository } from '../respositories/products-respository';
 
 const products = [{id: 1, title:'bread'}, {id: 2,title:'apple'}, {id: 3, title:'orange'}]
 
@@ -7,11 +8,9 @@ const products = [{id: 1, title:'bread'}, {id: 2,title:'apple'}, {id: 3, title:'
 export const productRouter = Router({})
 
 productRouter.get('/', (req:Request, res:Response) => {
-    if(req.query.title){
-        res.send(products.filter(item => item.title.indexOf(req.query.title!.toLocaleString())> -1))
-    }else {
-        res.send(products)
-    }
+    const foundProducts = productsRespository.findProduct(req.query.title?.toString())
+
+    res.send(foundProducts)
 })
 productRouter.get('/:id', (req:Request, res:Response) => {
     let product = products.find((prod)=> prod.id === +req.params.id)
