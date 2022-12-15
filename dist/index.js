@@ -24,9 +24,14 @@ app.use(parserMiddleweare);
 app.use('products', product_router_1.productRouter);
 app.use('addresses', addresses_router_1.addressesRouter);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, db_1.runDb)();
-    app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`);
-    });
+    try {
+        yield (0, db_1.runDb)();
+        app.listen(port, () => {
+            console.log(`Example app listening on port ${port}`);
+        });
+    }
+    catch (_a) {
+        console.log('error');
+    }
 });
 startApp();
