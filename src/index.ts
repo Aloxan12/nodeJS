@@ -16,9 +16,13 @@ app.use('products', productRouter)
 app.use('addresses', addressesRouter)
 
 const startApp = async ()=>{
-    await runDb()
-    app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`)
-    })
+    try{
+        await runDb()
+        app.listen(port, () => {
+            console.log(`Example app listening on port ${port}`)
+        })
+    }catch {
+        console.log('error')
+    }
 }
 startApp()
