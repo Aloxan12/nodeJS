@@ -19,7 +19,7 @@ const addresses_router_1 = require("./routers/addresses-router");
 const db_1 = require("./respositories/db");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3005;
-const parserMiddleweare = (0, body_parser_1.default)();
+const parserMiddleweare = body_parser_1.default.json();
 app.use(parserMiddleweare);
 app.use('products', product_router_1.productRouter);
 app.use('addresses', addresses_router_1.addressesRouter);
