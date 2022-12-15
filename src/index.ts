@@ -9,7 +9,7 @@ const app = express()
 
 const port = process.env.PORT || 3005
 
-const parserMiddleweare = bodyParser()
+const parserMiddleweare = bodyParser.json()
 app.use(parserMiddleweare)
 
 app.use('products', productRouter)
