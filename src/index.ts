@@ -10,7 +10,7 @@ const parserMiddleweare = express.json()
 app.use(parserMiddleweare)
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Hello Samurai')
+    res.send('Hello Samurai   ')
 })
 
 app.use('products', productRouter)
