@@ -1,4 +1,4 @@
-const firebase = require('./../../node_modules/firebase');
+const firebase = require('firebase');
 
 const db = firebase.initializeApp({
     apiKey: "AIzaSyD581GhiBddQSn1yg0HhWjnl42ImC7L2MI",
@@ -14,8 +14,17 @@ export const firestore = db.firestore();
 
 export async function getProducts(){
     try{
-        // const ddd  = await firestore.collection('products').doc().get()
-        // console.log('ddd', ddd )
+        const products = await firestore.collection('products')
+        const data = await products.get()
+        const productsArray: string[] = [];
+        // if(data.empty()){
+        //     console.log('empty')
+        // }else {
+        //     data.forEach((item: string)=>{
+        //         productsArray.push(item)
+        //     })
+        // }
+        console.log('data', data )
     }catch(e){
         console.log('e')
     }

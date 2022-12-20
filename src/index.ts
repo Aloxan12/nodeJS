@@ -3,6 +3,7 @@ import { productRouter } from './routers/product-router'
 import { addressesRouter } from './routers/addresses-router'
 import { getProducts } from './respositories/db'
 import cors from 'cors'
+import { runDb } from './respositories/dbMongo'
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -22,7 +23,7 @@ app.use('addresses', addressesRouter)
 
 const startApp = async ()=>{
     try{
-        await getProducts()
+        await runDb()
         app.listen(port, () => {
             console.log(`Example app listening on port ${port}`)
         })
