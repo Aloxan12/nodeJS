@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from 'mongodb'
+import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
@@ -7,18 +7,26 @@ export type ProductType = {
     _id?: ObjectId
 }
 
-// Connection URL
 const url = process.env.MONGO_URL
-if (!url) {
-    throw new Error('❗ Url doesn\'t found')
-}
-const client = new MongoClient(url);
 
-export const productCollection = client.db().collection<ProductType>('products');
+const client = new MongoClient('mongodb+srv://aloxan12:aloxan12_12@cluster0.gb4b92i.mongodb.net/?retryWrites=true&w=majority');
 
+// if (!url) {
+//     throw new Error('❗ Url doesn\'t found')
+// }
+// const client = new MongoClient(url);
+//
+// export const productCollection = client.db().collection<ProductType>('products');
+//
 export const runDb = async () => {
     try {
-        await client.connect();
+        await client.connect(err => {
+            const collection = client.db("test").collection("devices");
+            client.close();
+        });
+
+        const products = await client.db('nodeJS').collection('products');
+        await products.insertOne({title:'milk'})
         console.log('✅ Connected successfully to server');
     } catch (e) {
         console.log('❗ Don\'t connected successfully to server');
