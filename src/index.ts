@@ -2,6 +2,7 @@ import express, {Request, Response} from 'express'
 import { productRouter } from './routers/product-router'
 import { addressesRouter } from './routers/addresses-router'
 import { getProducts } from './respositories/db'
+import bodyParser from 'body-parser'
 import cors from 'cors'
 import { runDb } from './respositories/dbMongo'
 
@@ -9,17 +10,17 @@ const app = express()
 const port = process.env.PORT || 5000
 
 const parserMiddleweare = express.json()
-app.use(parserMiddleweare)
-app.use(cors())
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello Samurai   ')
-})
+app.use(parserMiddleweare, bodyParser.json())
+// app.use(cors())
 
 app.use(express.urlencoded({extended: true}))
 
-app.use('products', productRouter)
-app.use('addresses', addressesRouter)
+app.get('/', (req: Request, res: Response) => {
+    res.send('Hello Samurai')
+})
+app.use('/products', productRouter)
+app.use('/addresses', addressesRouter)
 
 const startApp = async ()=>{
     try{
