@@ -1,0 +1,7 @@
+node_modules
+.idea
+dist
+yarn-error.log
+.env
+nodejs-a451c-firebase-adminsdk-cw6uj-39f389fd44.json
+firebaseConfig.ts
