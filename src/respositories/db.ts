@@ -16,7 +16,7 @@ export async function getProducts(){
     try{
         const products = await firestore.collection('products')
         const data = await products.get()
-        const productsArray: string[] = [];
+        const productsArray: string[] = []; 
         // if(data.empty()){
         //     console.log('empty')
         // }else {
