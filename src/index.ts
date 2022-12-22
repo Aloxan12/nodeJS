@@ -9,17 +9,17 @@ const app = express()
 const port = process.env.PORT || 5000
 
 const parserMiddleweare = express.json()
+
 app.use(parserMiddleweare)
 app.use(cors())
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello Samurai   ')
-})
-
 app.use(express.urlencoded({extended: true}))
 
-app.use('products', productRouter)
-app.use('addresses', addressesRouter)
+app.get('/', (req: Request, res: Response) => {
+    res.send('Hello Samurai')
+})
+app.use('/products', productRouter)
+app.use('/addresses', addressesRouter)
 
 const startApp = async ()=>{
     try{
