@@ -7,26 +7,18 @@ export type ProductType = {
     _id?: ObjectId
 }
 
-const url = process.env.MONGO_URL
+const url = process.env.MONGO_URL || "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
 
-const client = new MongoClient('mongodb+srv://aloxan12:aloxan12_12@cluster0.gb4b92i.mongodb.net/?retryWrites=true&w=majority');
+const client = new MongoClient(url);
 
-// if (!url) {
-//     throw new Error('❗ Url doesn\'t found')
-// }
-// const client = new MongoClient(url);
-//
-// export const productCollection = client.db().collection<ProductType>('products');
-//
+
 export const runDb = async () => {
     try {
         await client.connect(err => {
-            const collection = client.db("test").collection("devices");
+            const collection = client.db("products").collection("products");
             client.close();
         });
-
-        const products = await client.db('nodeJS').collection('products');
-        await products.insertOne({title:'milk'})
+        const products = await client.db().collection('products');
         console.log('✅ Connected successfully to server');
     } catch (e) {
         console.log('❗ Don\'t connected successfully to server');
