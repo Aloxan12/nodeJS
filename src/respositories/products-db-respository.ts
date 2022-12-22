@@ -1,12 +1,5 @@
 import { getProducts } from "./db"
-import { client } from "./dbMongo"
-
-interface ProductType{
-    id: number
-    title: string
-}
-
-const productsCollection = client.db('shop').collection<ProductType>('products')
+import { productsCollection, ProductType } from "./dbMongo"
 
 
 export const productsRespository = {
