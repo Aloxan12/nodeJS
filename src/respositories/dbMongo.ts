@@ -7,8 +7,10 @@ export interface ProductType{
     title: string
 }
 
+
 const url = process.env.MONGO_URL || "mongodb://0.0.0.0:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
-const client = new MongoClient(url);
+console.log('url', url)
+const client = new MongoClient(url, { serverApi: ServerApiVersion.v1 });
 const db = client.db('shop')
 
 export const productsCollection = db.collection<ProductType>('products')
