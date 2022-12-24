@@ -20,6 +20,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 app.use('/products', productRouter)
 app.use('/addresses', addressesRouter)
+app.use('/users', userRouter)
 
 const startApp = async ()=>{
     try{
