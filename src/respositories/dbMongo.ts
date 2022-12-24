@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb'
 import * as dotenv from 'dotenv'
 dotenv.config()
+import mongoose from "mongoose";
 
 export enum RoleType {
     'ADMIN' = 'ADMIN',
@@ -35,6 +36,7 @@ export const userCollection = db.collection<UserType>('users')
 export const runDb = async () => {
     try {
         await client.connect();
+        await mongoose.connect(url)
         console.log('✅ Connected successfully to server');
     } catch (e) {
         console.log('❗ Don\'t connected successfully to server');
