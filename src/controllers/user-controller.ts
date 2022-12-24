@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from 'express'
 import {validationResult} from 'express-validator'
 import {ApiError} from '../exeptions/api-error'
+import { userRespository } from '../respositories/user-respository';
 
 export const userController = {
     async registration(req: Request, res: Response, next: NextFunction){
@@ -12,12 +13,10 @@ export const userController = {
                 );
             }
             const { email, password, role } = req.body;
-            const userData = await userService.registration(email, password, role);
 
-            res.setHeader("refreshToken", userData.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-            });
+            const userData = await userRespository.registration(email, password, role);
+
+            res.setHeader("refreshToken", userData.refreshToken);
             return res.json(userData);
         } catch (e) {
             next(e);
