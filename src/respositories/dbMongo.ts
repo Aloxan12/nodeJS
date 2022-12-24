@@ -36,7 +36,7 @@ export const userCollection = db.collection<UserType>('users')
 export const runDb = async () => {
     try {
         await client.connect();
-        await mongoose.connect(url + 'new_JWT')
+        await mongoose.connect(url + '/' + 'JWT')
         console.log('✅ Connected successfully to server');
     } catch (e) {
         console.log('❗ Don\'t connected successfully to server');
