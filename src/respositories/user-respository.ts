@@ -15,7 +15,6 @@ export const userRespository = {
         const hashPassword = await bcrypt.hash(password, 3)
         const activationLink = new Date()
 
-        // const userRole = await RoleModel.findOne({value: "USER"})
         const user = await UserModel.create({email, password: hashPassword, activationLink, role})
         await mailRepository.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)
 
