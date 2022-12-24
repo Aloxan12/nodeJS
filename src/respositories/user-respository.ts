@@ -3,14 +3,11 @@ import { UserModel } from "../models/user-model"
 import bcrypt from "bcrypt"
 import { productsCollection, ProductType } from "./dbMongo"
 import { mailRepository } from "./mail-repository"
-
-enum RoleType {
-    'ADMIN' = 'ADMIN',
-    'USER' = 'USER',
-}
+import { tokenRepository } from "./token-repository"
+import { RoleType, UserDto } from "../dtos/user-dto"
 
 export const userRespository = {
-    async registration(email: string, password: string, role:RoleType ){
+    async registration(email: string, password: string, role: RoleType ){
         const candidate = await UserModel.findOne({email})
         if(candidate){
             throw ApiError.BadRequest(`Пользователь с таким почтовым адресом - ${email}  уже существует`)
@@ -23,8 +20,8 @@ export const userRespository = {
         await mailRepository.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)
 
         const userDto = new UserDto(user) //id, email, isActivated
-        const tokens = tokenService.generateTokens({...userDto})
-        await tokenService.saveToken(userDto.id, tokens.refreshToken)
+        const tokens = tokenRepository.generateTokens({...userDto})
+        await tokenRepository.saveToken(userDto.id, tokens.refreshToken)
 
         return {
             ...tokens,
