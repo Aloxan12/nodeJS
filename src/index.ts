@@ -1,7 +1,6 @@
 import express, {Request, Response} from 'express'
 import { productRouter } from './routers/product-router'
 import { addressesRouter } from './routers/addresses-router'
-import { getProducts } from './respositories/db'
 import cors from 'cors'
 import { runDb } from './respositories/dbMongo'
 
