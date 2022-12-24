@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from 'express'
 import {validationResult} from 'express-validator'
 import {ApiError} from '../exeptions/api-error'
+import { UserModel } from '../models/user-model';
 import { userRespository } from '../respositories/user-respository';
 
 export const userController = {
@@ -18,6 +19,14 @@ export const userController = {
 
             res.setHeader("refreshToken", userData.refreshToken);
             return res.json(userData);
+        } catch (e) {
+            next(e);
+        }
+    },
+    async getAllUsers(req: Request, res: Response, next: NextFunction){
+        try {
+            const users = await UserModel.find()
+            return res.json(users);
         } catch (e) {
             next(e);
         }

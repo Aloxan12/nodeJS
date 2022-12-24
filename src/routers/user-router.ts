@@ -12,7 +12,8 @@ export const userRouter = Router({})
 
 const titleValidation = body('title').trim().isLength({min: 3, max: 6}).withMessage('Название должно содержать от 3 до 10 символов')
 
-userRouter.get('/registration', userController.registration)
+userRouter.get('/registration', userController.getAllUsers)
+userRouter.post('/registration', userController.registration)
 userRouter.get('/:id', async (req:Request, res:Response) => {
     let product = await productsRespository.getProductById(+req.params.id)
     if(product) {
