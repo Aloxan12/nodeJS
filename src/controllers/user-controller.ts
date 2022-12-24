@@ -16,6 +16,7 @@ export const userController = {
             const { email, password, role } = req.body;
 
             const userData = await userRespository.registration(email, password, role);
+            console.log('userData', userData)
 
             res.setHeader("refreshToken", userData.refreshToken);
             return res.json(userData);

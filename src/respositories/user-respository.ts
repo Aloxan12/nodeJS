@@ -21,7 +21,8 @@ export const userRespository = {
         const userDto = new UserDto(user) //id, email, isActivated
         const tokens = tokenRepository.generateTokens({...userDto})
         await tokenRepository.saveToken(userDto.id, tokens.refreshToken)
-
+        console.log('userDto', userDto)
+        console.log('tokens', tokens)
         return {
             ...tokens,
             user: userDto
