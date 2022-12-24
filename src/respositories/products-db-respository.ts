@@ -1,4 +1,3 @@
-import { getProducts } from "./db"
 import { productsCollection, ProductType } from "./dbMongo"
 
 

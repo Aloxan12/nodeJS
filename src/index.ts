@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express'
 import { productRouter } from './routers/product-router'
 import { addressesRouter } from './routers/addresses-router'
-import { getProducts } from './respositories/db'
+import { userRouter } from './routers/user-router'
 import cors from 'cors'
 import { runDb } from './respositories/dbMongo'
 
@@ -20,6 +20,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 app.use('/products', productRouter)
 app.use('/addresses', addressesRouter)
+app.use('/users', userRouter)
 
 const startApp = async ()=>{
     try{
