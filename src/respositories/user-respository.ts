@@ -16,7 +16,7 @@ export const userRespository = {
         const activationLink = new Date()
 
         const user = await UserModel.create({email, password: hashPassword, activationLink, role})
-        await mailRepository.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)
+        // await mailRepository.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)
 
         const userDto = new UserDto(user) //id, email, isActivated
         const tokens = tokenRepository.generateTokens({...userDto})

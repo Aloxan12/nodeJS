@@ -36,6 +36,8 @@ export const userCollection = db.collection<UserType>('users')
 export const runDb = async () => {
     try {
         await client.connect();
+        
+        mongoose.set("strictQuery", false);
         await mongoose.connect(url, {
             dbName: 'new_JWT'
         })
