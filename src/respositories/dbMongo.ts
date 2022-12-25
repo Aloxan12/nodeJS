@@ -1,5 +1,6 @@
-import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb'
+import {MongoClient, ObjectId, ServerApiVersion} from 'mongodb'
 import * as dotenv from 'dotenv'
+
 dotenv.config()
 import mongoose from "mongoose";
 
@@ -8,12 +9,12 @@ export enum RoleType {
     'USER' = 'USER',
 }
 
-export interface ProductType{
+export interface ProductType {
     id: number
     title: string
 }
 
-export interface UserType{
+export interface UserType {
     email: string;
     password: string;
     _id: string;
@@ -25,8 +26,7 @@ export interface UserType{
 
 
 const url = process.env.MONGODB_URI || "mongodb://0.0.0.0:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
-console.log('url', url)
-const client = new MongoClient(url, { serverApi: ServerApiVersion.v1 });
+const client = new MongoClient(url, {serverApi: ServerApiVersion.v1});
 const db = client.db('new_JWT')
 
 export const productsCollection = db.collection<ProductType>('products')
@@ -36,7 +36,9 @@ export const userCollection = db.collection<UserType>('users')
 export const runDb = async () => {
     try {
         await client.connect();
-        await mongoose.connect(url, {dbName: 'new_JWT'})
+        await mongoose.connect(url, {
+            dbName: 'new_JWT'
+        })
         console.log('✅ Connected successfully to server');
     } catch (e) {
         console.log('❗ Don\'t connected successfully to server');
