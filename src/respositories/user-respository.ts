@@ -9,7 +9,7 @@ import { RoleType, UserDto } from "../dtos/user-dto"
 export const userRespository = {
     async registration(email: string, password: string, role: RoleType ){
         const candidate = await UserModel.findOne({email})
-        if(candidate){
+        if(!!candidate){
             throw ApiError.BadRequest(`Пользователь с таким почтовым адресом - ${email}  уже существует`)
         }
         const hashPassword = await bcrypt.hash(password, 3)
@@ -21,8 +21,6 @@ export const userRespository = {
         const userDto = new UserDto(user) //id, email, isActivated
         const tokens = tokenRepository.generateTokens({...userDto})
         await tokenRepository.saveToken(userDto.id, tokens.refreshToken)
-        console.log('userDto', userDto)
-        console.log('tokens', tokens)
         return {
             ...tokens,
             user: userDto
