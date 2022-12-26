@@ -16,3 +16,4 @@ const titleValidation = body('title').trim().isLength({min: 3, max: 6}).withMess
 userRouter.get('/',authMiddleware, userController.getAllUsers)
 userRouter.get('/:id', authMiddleware, userController.getUserDetail)
 userRouter.patch('/:id', authMiddleware, userController.updateUserDetail)
+userRouter.patch('/:id/uploadAvatar', authMiddleware, userController.uploadUserAvatar)

@@ -121,5 +121,19 @@ export const userRespository = {
         } else {
             throw ApiError.BadRequest('Пользователь не найден')
         }
+    },
+
+    async uploadUserAvatar(id: string, avatar: string){
+        try {
+            const user = await UserModel.findOne({_id: id})
+            await user.update({
+                avatar: avatar,
+            })
+            return ({
+                avatar: avatar,
+            })
+        }catch (e) {
+            console.log(e)
+        }
     }
 }
