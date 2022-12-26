@@ -24,6 +24,18 @@ export const userController = {
             next(e);
         }
     },
+    async login(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { email, password } = req.body;
+            const userData = await userRespository.login(email, password);
+
+            // res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            res.setHeader("refreshToken", userData.refreshToken);
+            return res.json(userData);
+        } catch (e) {
+            next(e);
+        }
+    },
     async getAllUsers(req: Request, res: Response, next: NextFunction){
         try {
             const users = await UserModel.find()

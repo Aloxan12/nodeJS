@@ -26,6 +26,28 @@ export const userRespository = {
             user: userDto
         }
     },
+    async login (email: string, password: string){
+        const user = await UserModel.findOne({email})
+        if(!user){
+            throw ApiError.BadRequest('Пользователь с таким email не найден')
+        }
+        const isPassEquals = await bcrypt.compare(password, user.password)
+        if(!isPassEquals){
+            throw ApiError.BadRequest('Неверный пароль')
+        }
+        const userDto = new UserDto(user) //id, email, isActivated
+        const tokens = tokenRepository.generateTokens({...userDto})
+        await tokenRepository.saveToken(userDto.id, tokens.refreshToken)
+
+        return {
+            ...tokens,
+            user: userDto
+        }
+    },
+
+
+
+    
     async getProductById(id: number){
         let product: ProductType | null = await productsCollection.findOne({id: id})
         return product
