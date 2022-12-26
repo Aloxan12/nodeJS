@@ -4,6 +4,7 @@ import { addressesRouter } from './routers/addresses-router'
 import { userRouter } from './routers/user-router'
 import cors from 'cors'
 import { runDb } from './respositories/dbMongo'
+import { authRouter } from './routers/auth-router'
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -18,6 +19,7 @@ app.use(express.urlencoded({extended: true}))
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello Samurai')
 })
+app.use('', authRouter)
 app.use('/products', productRouter)
 app.use('/addresses', addressesRouter)
 app.use('/users', userRouter)

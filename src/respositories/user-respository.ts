@@ -1,16 +1,16 @@
-import { ApiError } from "../exeptions/api-error"
-import { UserModel } from "../models/user-model"
+import {ApiError} from "../exeptions/api-error"
+import {UserModel} from "../models/user-model"
 import bcrypt from "bcrypt"
-import { productsCollection, ProductType } from "./dbMongo"
-import { mailRepository } from "./mail-repository"
-import { tokenRepository } from "./token-repository"
-import {IUserDto, RoleType, UserDto } from "../dtos/user-dto"
+import {productsCollection, ProductType} from "./dbMongo"
+import {mailRepository} from "./mail-repository"
+import {tokenRepository} from "./token-repository"
+import {IUserDto, RoleType, UserDto, IUserDtoBD} from "../dtos/user-dto"
 import mongodb from 'mongodb'
 
 export const userRespository = {
-    async registration(email: string, password: string, role: RoleType ){
+    async registration(email: string, password: string, role: RoleType) {
         const candidate = await UserModel.findOne({email})
-        if(!!candidate){
+        if (!!candidate) {
             throw ApiError.BadRequest(`Пользователь с таким почтовым адресом - ${email}  уже существует`)
         }
         const hashPassword = await bcrypt.hash(password, 3)
@@ -27,13 +27,13 @@ export const userRespository = {
             user: userDto
         }
     },
-    async login (email: string, password: string){
+    async login(email: string, password: string) {
         const user = await UserModel.findOne({email})
-        if(!user){
+        if (!user) {
             throw ApiError.BadRequest('Пользователь с таким email не найден')
         }
         const isPassEquals = await bcrypt.compare(password, user.password)
-        if(!isPassEquals){
+        if (!isPassEquals) {
             throw ApiError.BadRequest('Неверный пароль')
         }
         const userDto = new UserDto(user) //id, email, isActivated
@@ -46,17 +46,17 @@ export const userRespository = {
         }
     },
 
-    async logout(refreshToken: string){
+    async logout(refreshToken: string) {
         const token = await tokenRepository.removeToken(refreshToken)
         return token
     },
-    async refresh(refreshToken: string){
-        if(!refreshToken){
+    async refresh(refreshToken: string) {
+        if (!refreshToken) {
             throw ApiError.UnauthorizedError()
         }
         const userData: IUserDto = tokenRepository.validateRefreshToken(refreshToken) as IUserDto
         const tokenFromDb = await tokenRepository.findToken(refreshToken)
-        if(!userData && !tokenFromDb){
+        if (!userData && !tokenFromDb) {
             throw ApiError.UnauthorizedError()
         }
         const user = await UserModel.findById(userData.id);
@@ -70,9 +70,23 @@ export const userRespository = {
         }
     },
 
-    async getUserDetail(id: string){
+    async getAllUsers() {
+        const usersBD = await UserModel.find()
+        const users = usersBD.map((user: IUserDtoBD) => ({
+            id: user._id,
+            email: user.email,
+            role: user.role,
+            isActivated: user.isActivated,
+            avatar: user.avatar,
+            status: user.status
+        }))
+        return users
+    },
+
+    async getUserDetail(id: string) {
         const user = await UserModel.findOne({_id: new mongodb.ObjectId(id)})
-        if(!!user){
+        console.log('user', user)
+        if (!!user) {
             return {
                 id: user._id,
                 email: user.email,
@@ -81,7 +95,7 @@ export const userRespository = {
                 avatar: user.avatar,
                 status: user.status
             }
-        }else{
+        } else {
             throw ApiError.BadRequest('Пользователь не найден')
         }
     }
