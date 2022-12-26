@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 import { productsCollection, ProductType } from "./dbMongo"
 import { mailRepository } from "./mail-repository"
 import { tokenRepository } from "./token-repository"
-import { RoleType, UserDto } from "../dtos/user-dto"
+import {IUserDto, RoleType, UserDto } from "../dtos/user-dto"
 
 export const userRespository = {
     async registration(email: string, password: string, role: RoleType ){
@@ -45,26 +45,29 @@ export const userRespository = {
         }
     },
 
+    async logout(refreshToken: string){
+        const token = await tokenRepository.removeToken(refreshToken)
+        return token
+    },
+    async refresh(refreshToken: string){
+        if(!refreshToken){
+            throw ApiError.UnauthorizedError()
+        }
+        const userData: IUserDto = tokenRepository.validateRefreshToken(refreshToken) as IUserDto
+        const tokenFromDb = await tokenRepository.findToken(refreshToken)
+        if(!userData && !tokenFromDb){
+            throw ApiError.UnauthorizedError()
+        }
+        const user = await UserModel.findById(userData.id);
+        const userDto = new UserDto(user) //id, email, isActivated
+        const tokens = tokenRepository.generateTokens({...userDto})
+        await tokenRepository.saveToken(userDto.id, tokens.refreshToken)
 
+        return {
+            ...tokens,
+            user: userDto
+        }
+    },
 
     
-    async getProductById(id: number){
-        let product: ProductType | null = await productsCollection.findOne({id: id})
-        return product
-    },
-    async createProduct(title: string){
-        const newProduct = {
-            id: +(new Date), 
-            title: title}
-        await productsCollection.insertOne(newProduct)
-        return newProduct
-    },
-    async updateProduct(id: number, title: string){
-        const result = await productsCollection.updateOne({id:id},{$set:{title: title}})
-        return result.matchedCount === 1
-    },
-    async deleteProduct(id: number){
-       const result =  await productsCollection.deleteOne({id:id})
-        return result.deletedCount === 1
-    }
 }

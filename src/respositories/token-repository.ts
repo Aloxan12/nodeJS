@@ -1,6 +1,7 @@
 import { tokenModel } from "../models/token-model"
 import * as dotenv from "dotenv";
 import jwt  from 'jsonwebtoken'
+import { IUserDto } from "../dtos/user-dto";
 
 dotenv.config()
 
@@ -25,7 +26,7 @@ export const tokenRepository = {
     validateRefreshToken(token: string){
         try {
             const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET  as string)
-            return userData
+            return userData as IUserDto
         }catch (e) {
             return null
         }

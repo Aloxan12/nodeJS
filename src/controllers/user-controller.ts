@@ -36,9 +36,47 @@ export const userController = {
             next(e);
         }
     },
+
+    async logout(req: Request, res: Response, next: NextFunction) {
+        try {
+            //const {refreshToken} = req.cookies
+            const { refreshtoken } = req.headers;
+
+            const token = await userRespository.logout(refreshtoken as string);
+            res.removeHeader("refreshToken");
+            return res.json(token);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    async refresh(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { refreshtoken } = req.headers;
+
+            const userData = await userRespository.refresh(refreshtoken as string);
+
+            res.setHeader("refreshToken", userData.refreshToken);
+            return res.json(userData);
+        } catch (e) {
+            next(e);
+        }
+    },
+    
     async getAllUsers(req: Request, res: Response, next: NextFunction){
         try {
             const users = await UserModel.find()
+            return res.json(users);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    async getUserDetail(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+
+            const users = await userRespository.getUserDetail(id);
             return res.json(users);
         } catch (e) {
             next(e);

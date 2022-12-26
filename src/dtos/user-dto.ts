@@ -3,9 +3,18 @@ export enum RoleType {
     'USER' = 'USER',
 }
 
-interface IUserDto{
+export interface IUserDtoDB{
     email: string;
     _id: string;
+    isActivated: boolean;
+    role: RoleType;
+    avatar: string;
+    status: string;
+}
+
+export interface IUserDto{
+    email: string;
+    id: string;
     isActivated: boolean;
     role: RoleType;
     avatar: string;
@@ -20,7 +29,7 @@ export class UserDto {
     avatar;
     status;
 
-    constructor(model: IUserDto) {
+    constructor(model: IUserDtoDB) {
         this.email = model.email
         this.id = model._id
         this.isActivated = model.isActivated
