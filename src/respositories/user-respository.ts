@@ -13,12 +13,12 @@ export const userRespository = {
         if (!!candidate) {
             throw ApiError.BadRequest(`Пользователь с таким почтовым адресом - ${email}  уже существует`)
         }
+        console.log('password', password)
         const hashPassword = await bcrypt.hash(password, 3)
-        const activationLink = new Date()
-
+        console.log('hashPassword', hashPassword)
+        const activationLink = Date.now().toString()
         const user = await UserModel.create({email, password: hashPassword, activationLink, role})
         // await mailRepository.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)
-
         const userDto = new UserDto(user) //id, email, isActivated
         const tokens = tokenRepository.generateTokens({...userDto})
         await tokenRepository.saveToken(userDto.id, tokens.refreshToken)
