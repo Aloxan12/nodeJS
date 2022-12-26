@@ -2,6 +2,7 @@ import {Request, Response} from 'express'
 import { Router } from "express";
 import { body } from 'express-validator';
 import { userController } from '../controllers/user-controller';
+import { authMiddleware } from '../middlewares/auth-middleware';
 import { inputValidationMiddleware } from '../middlewares/input-validation-middleware';
 import { productsRespository } from '../respositories/products-db-respository';
 
@@ -12,5 +13,6 @@ export const userRouter = Router({})
 
 const titleValidation = body('title').trim().isLength({min: 3, max: 6}).withMessage('Название должно содержать от 3 до 10 символов')
 
-userRouter.get('/', userController.getAllUsers)
-userRouter.get('/:id', userController.getUserDetail)
+userRouter.get('/',authMiddleware, userController.getAllUsers)
+userRouter.get('/:id', authMiddleware, userController.getUserDetail)
+userRouter.patch('/:id', authMiddleware, userController.updateUserDetail)

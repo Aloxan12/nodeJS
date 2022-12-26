@@ -16,7 +16,6 @@ export const userController = {
             const { email, password, role } = req.body;
 
             const userData = await userRespository.registration(email, password, role);
-            console.log('userData', userData)
 
             res.setHeader("refreshToken", userData.refreshToken);
             return res.json(userData);
@@ -29,7 +28,6 @@ export const userController = {
             const { email, password } = req.body;
             const userData = await userRespository.login(email, password);
 
-            // res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             res.setHeader("refreshToken", userData.refreshToken);
             return res.json(userData);
         } catch (e) {
@@ -39,7 +37,6 @@ export const userController = {
 
     async logout(req: Request, res: Response, next: NextFunction) {
         try {
-            //const {refreshToken} = req.cookies
             const { refreshtoken } = req.headers;
 
             const token = await userRespository.logout(refreshtoken as string);
@@ -75,11 +72,22 @@ export const userController = {
     async getUserDetail(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-
             const users = await userRespository.getUserDetail(id);
             return res.json(users);
         } catch (e) {
             next(e);
         }
-    }
+    },
+
+    async updateUserDetail(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const user = req.body;
+
+            const users = await userRespository.updateUserDetail(id, user);
+            return res.json(users);
+        } catch (e) {
+            next(e);
+        }
+    },
 }

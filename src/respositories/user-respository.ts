@@ -84,8 +84,7 @@ export const userRespository = {
     },
 
     async getUserDetail(id: string) {
-        const user = await UserModel.findOne({_id: new mongodb.ObjectId(id)})
-        console.log('user', user)
+        const user = await UserModel.findOne({_id: id})
         if (!!user) {
             return {
                 id: user._id,
@@ -94,6 +93,30 @@ export const userRespository = {
                 isActivated: user.isActivated,
                 avatar: user.avatar,
                 status: user.status
+            }
+        } else {
+            throw ApiError.BadRequest('Пользователь не найден')
+        }
+    },
+
+    async updateUserDetail(id: string, user: UserDto) {
+        const currentUser = await UserModel.findOne({_id: id})
+        await currentUser.update({
+            id: currentUser._id,
+            email: currentUser.email,
+            role: currentUser.role,
+            isActivated: currentUser.isActivated,
+            avatar: currentUser.avatar,
+            status: !!user.status ? user.status : currentUser.status
+        })
+        if (!!currentUser) {
+            return {
+                id: currentUser._id,
+                email: currentUser.email,
+                role: currentUser.role,
+                isActivated: currentUser.isActivated,
+                avatar: currentUser.avatar,
+                status: !!user.status ? user.status : currentUser.status
             }
         } else {
             throw ApiError.BadRequest('Пользователь не найден')
