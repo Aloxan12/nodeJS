@@ -5,6 +5,7 @@ import { productsCollection, ProductType } from "./dbMongo"
 import { mailRepository } from "./mail-repository"
 import { tokenRepository } from "./token-repository"
 import {IUserDto, RoleType, UserDto } from "../dtos/user-dto"
+import mongodb from 'mongodb'
 
 export const userRespository = {
     async registration(email: string, password: string, role: RoleType ){
@@ -69,5 +70,19 @@ export const userRespository = {
         }
     },
 
-    
+    async getUserDetail(id: string){
+        const user = await UserModel.findOne({_id: new mongodb.ObjectId(id)})
+        if(!!user){
+            return {
+                id: user._id,
+                email: user.email,
+                role: user.role,
+                isActivated: user.isActivated,
+                avatar: user.avatar,
+                status: user.status
+            }
+        }else{
+            throw ApiError.BadRequest('Пользователь не найден')
+        }
+    }
 }
