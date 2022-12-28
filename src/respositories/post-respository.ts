@@ -14,7 +14,7 @@ export const postRespository = {
         page = page || 1
         limit = limit || 5
         let offset = +page * +limit - +limit
-        const posts: IPostDtoBD[] = await PostModel.find()
+        const posts: IPostDtoBD[] = await PostModel.find().populate('author');
         const filterPosts = posts.filter(post => {
             return !!search ? post.postText.toLowerCase().includes(search.toLowerCase()) : true
         }).reverse()
@@ -25,16 +25,19 @@ export const postRespository = {
                 id: post._id,
                 postText: post.postText,
                 publicDate: post.publicDate,
-                author: post.author,
+                author: {
+                    id:post.author.id,
+                    email:post.author.email,
+                    avatar:post.author.avatar
+                },
             })).slice(offset,Number(offset) + Number(limit))
         }
     },
-    async createPost(postText: string, author: number, publicDate: string){
+    async createPost(postText: string, author: number,){
         if(postText.length > 5000){
             throw ApiError.BadRequest(`Текст не олжен привышать 5000 символов`)
         }
-        const user = await UserModel.findOne({id: author})
-        const post = await PostModel.create({postText, author: user, publicDate})
+        const post = await PostModel.create({postText, author, publicDate: new Date()})
         const postDto = new PostDto(post)
         return {
             post: postDto

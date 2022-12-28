@@ -14,5 +14,4 @@ export const postRouter = Router({})
 const titleValidation = body('title').trim().isLength({min: 3, max: 6}).withMessage('Название должно содержать от 3 до 10 символов')
 
 postRouter.get('/',authMiddleware, postController.getPosts)
-postRouter.patch('/:id', authMiddleware, userController.updateUserDetail)
-postRouter.patch('/:id/uploadAvatar', authMiddleware, userController.uploadUserAvatar)
+postRouter.post('/',authMiddleware, postController.createPosts)
