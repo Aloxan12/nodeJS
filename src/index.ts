@@ -1,12 +1,12 @@
 import express, {Request, Response} from 'express'
 import { productRouter } from './routers/product-router'
-import { addressesRouter } from './routers/addresses-router'
 import { userRouter } from './routers/user-router'
 import cors from 'cors'
 import { runDb } from './respositories/dbMongo'
 import { authRouter } from './routers/auth-router'
 import expressFileupload, {UploadedFile} from 'express-fileupload'
 import path from 'path'
+import { postRouter } from './routers/post-router'
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -23,8 +23,8 @@ app.get('/', (req: Request, res: Response) => {
 })
 app.use('', authRouter)
 app.use('/products', productRouter)
-app.use('/addresses', addressesRouter)
 app.use('/users', userRouter)
+app.use('/posts', postRouter)
 
 const startApp = async ()=>{
     try{
