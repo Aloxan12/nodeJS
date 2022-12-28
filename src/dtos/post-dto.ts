@@ -19,7 +19,7 @@ export interface IPostDto{
     id: string
 }
 
-module.exports = class PostDto {
+export class PostDto {
     postText;
     author;
     publicDate;

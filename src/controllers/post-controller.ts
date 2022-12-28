@@ -18,4 +18,15 @@ export const postController = {
             next(e)
         }
     },
+    async createPosts(req: Request, res: Response, next: NextFunction){
+        try {
+            const {postText, author, publicDate} = req.body
+
+            const post = await postRespository.createPost(postText, author, publicDate)
+
+            return res.json(post)
+        }catch (e){
+            next(e)
+        }
+    },
 }

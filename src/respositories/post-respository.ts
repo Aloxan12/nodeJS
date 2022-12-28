@@ -7,7 +7,7 @@ import {tokenRepository} from "./token-repository"
 import {IUserDto, RoleType, UserDto, IUserDtoBD} from "../dtos/user-dto"
 import mongodb from 'mongodb'
 import { PostModel } from "../models/post-model"
-import { IPostDto, IPostDtoBD } from "../dtos/post-dto"
+import { IPostDto, IPostDtoBD, PostDto } from "../dtos/post-dto"
 
 export const postRespository = {
     async getAllPosts(search: string, limit: string | number, page: string | number){
@@ -27,6 +27,17 @@ export const postRespository = {
                 publicDate: post.publicDate,
                 author: post.author,
             })).slice(offset,Number(offset) + Number(limit))
+        }
+    },
+    async createPost(postText: string, author: number, publicDate: string){
+        if(postText.length > 5000){
+            throw ApiError.BadRequest(`Текст не олжен привышать 5000 символов`)
+        }
+        const user = await UserModel.findOne({id: author})
+        const post = await PostModel.create({postText, author: user, publicDate})
+        const postDto = new PostDto(post)
+        return {
+            post: postDto
         }
     },
 }
