@@ -141,9 +141,7 @@ export const userRespository = {
             await user.update({
                 avatar: avatar,
             })
-            return ({
-                avatar: avatar,
-            })
+            return user
         }catch (e) {
             console.log(e)
         }
