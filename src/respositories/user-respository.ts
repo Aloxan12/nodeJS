@@ -70,17 +70,29 @@ export const userRespository = {
         }
     },
 
-    async getAllUsers() {
+    async getAllUsers(search:string, limit:string | number, page:string | number) {
+        page = +page || 1
+        limit = +limit || 10
+        let offset = +page * +limit - +limit
         const usersBD = await UserModel.find()
-        const users = usersBD.map((user: IUserDtoBD) => ({
+
+        const filterUser = usersBD.filter((user: IUserDtoBD) => {
+            return !!search ? user.email.toLowerCase().includes(search.toLowerCase()) : true
+        })
+
+        const users = filterUser.map((user: IUserDtoBD) => ({
             id: user._id,
             email: user.email,
             role: user.role,
             isActivated: user.isActivated,
             avatar: user.avatar,
             status: user.status
-        }))
-        return users
+        })).slice(offset,offset + limit)
+
+        return {
+            count: filterUser.length,
+            results: users
+        }
     },
 
     async getUserDetail(id: string) {

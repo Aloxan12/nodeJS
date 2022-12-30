@@ -65,7 +65,8 @@ export const userController = {
 
     async getAllUsers(req: Request, res: Response, next: NextFunction) {
         try {
-            const usersData = await userRespository.getAllUsers();
+            const { search, limit, page } = req.query;
+            const usersData = await userRespository.getAllUsers(search as string, limit as string, page as string);
             return res.json(usersData);
         } catch (e) {
             next(e);
