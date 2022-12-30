@@ -102,7 +102,7 @@ export const userController = {
 
             const img = req.files?.file as UploadedFile
             let avatarName = Date.now() + ".jpg";
-            img.mv(path.resolve(__dirname, "..", "..", "src" , "uploads", avatarName));
+            img.mv(path.resolve(__dirname, "..", "..", "src" , "tmp", avatarName));
             const user = await userRespository.uploadUserAvatar(id, avatarName);
             return res.json(user);
         } catch (e) {
