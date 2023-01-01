@@ -105,8 +105,6 @@ export const userController = {
             img.mv(path.resolve(__dirname, "..", "..", "src" , "tmp", avatarName));
             const user = await userRespository.uploadUserAvatar(id, avatarName);
             return res.json(user);
-        } catch (e) {
-            next(e);
-        }
+        } catch (e) {next(e);}
     }
 }
