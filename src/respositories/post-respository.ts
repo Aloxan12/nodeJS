@@ -43,4 +43,9 @@ export const postRespository = {
             post: postDto
         }
     },
+    async deletePost(id: string){
+        const post = await PostModel.deleteOne({_id: new mongodb.ObjectId(id)})
+
+        return {status: 204, message:'Пост успешно удален', post}
+    }
 }

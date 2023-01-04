@@ -27,4 +27,13 @@ export const postController = {
             next(e)
         }
     },
+    async deletePost(req: Request, res: Response, next: NextFunction){
+        try {
+            const {id} = req.params
+            const post = await postRespository.deletePost(id as string)
+            return res.json(post)
+        }catch (e){
+            next(e)
+        }
+    }
 }
