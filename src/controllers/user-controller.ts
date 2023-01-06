@@ -100,13 +100,14 @@ export const userController = {
         try {
             const {id} = req.params;
             req.files?.file
-            uploadFile(req.files?.file)
-
+            if(!!req.files?.file){
+                await uploadFile(req.files?.file)
+            }
             // const img = req.files?.file as UploadedFile
             // let avatarName = Date.now() + ".jpg";
             // img.mv(path.resolve(__dirname, "..", "..", "src" , "tmp", avatarName));
             // const user = await userRespository.uploadUserAvatar(id, avatarName);
-            return res.send(200)  // res.json(user);
+            return res.status(200)  // res.json(user);
         } catch (e) {next(e);}
     }
 }

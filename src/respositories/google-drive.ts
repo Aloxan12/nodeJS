@@ -1,4 +1,4 @@
-import stream from "stream"
+import {PassThrough, Readable,  } from "stream"
 import express from "express"
 import multer from "multer"
 import path from "path"
@@ -14,15 +14,15 @@ const auth = new google.auth.GoogleAuth({
 });
 
 export const uploadFile = async (fileObject: any) => {
-    const bufferStream = new stream.PassThrough();
-    bufferStream.end(fileObject.buffer);
+    const bufferStream = new PassThrough();
+    bufferStream.end(fileObject.data);
     const { data } = await google.drive({ version: "v3", auth }).files.create({
         media: {
-            mimeType: fileObject.mimeType,
+            mimeType: fileObject.mimetype,
             body: bufferStream,
         },
         requestBody: {
-            name: fileObject.originalname,
+            name: fileObject.name,
             parents: ["1Cw4ql7UrpQnO8wuDCyC0DrkIQ_ZjsiQV"],
         },
         fields: "id,name",
