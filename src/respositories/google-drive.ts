@@ -12,3 +12,20 @@ const auth = new google.auth.GoogleAuth({
     keyFile: KEYFILEPATH,
     scopes: SCOPES,
 });
+
+export const uploadFile = async (fileObject: any) => {
+    const bufferStream = new stream.PassThrough();
+    bufferStream.end(fileObject.buffer);
+    const { data } = await google.drive({ version: "v3", auth }).files.create({
+        media: {
+            mimeType: fileObject.mimeType,
+            body: bufferStream,
+        },
+        requestBody: {
+            name: fileObject.originalname,
+            parents: ["1Cw4ql7UrpQnO8wuDCyC0DrkIQ_ZjsiQV"],
+        },
+        fields: "id,name",
+    });
+    console.log(`Uploaded file ${data.name} ${data.id}`);
+};

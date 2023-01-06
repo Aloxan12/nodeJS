@@ -6,6 +6,7 @@ import {userRespository} from '../respositories/user-respository';
 import path from "path";
 import fs from 'fs' ;
 import {UploadedFile} from 'express-fileupload';
+import { uploadFile } from '../respositories/google-drive';
 
 export const userController = {
     async registration(req: Request, res: Response, next: NextFunction) {
@@ -99,12 +100,13 @@ export const userController = {
         try {
             const {id} = req.params;
             req.files?.file
+            uploadFile(req.files?.file)
 
-            const img = req.files?.file as UploadedFile
-            let avatarName = Date.now() + ".jpg";
-            img.mv(path.resolve(__dirname, "..", "..", "src" , "tmp", avatarName));
-            const user = await userRespository.uploadUserAvatar(id, avatarName);
-            return res.json(user);
+            // const img = req.files?.file as UploadedFile
+            // let avatarName = Date.now() + ".jpg";
+            // img.mv(path.resolve(__dirname, "..", "..", "src" , "tmp", avatarName));
+            // const user = await userRespository.uploadUserAvatar(id, avatarName);
+            return res.send(200)  // res.json(user);
         } catch (e) {next(e);}
     }
 }
