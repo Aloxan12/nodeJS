@@ -27,5 +27,5 @@ export const uploadFile = async (fileObject: any) => {
         },
         fields: "id,name",
     });
-    console.log(`Uploaded file ${data.name} ${data.id}`);
+    console.log(`Uploaded file data ${JSON.stringify(data.id)}`);
 };
