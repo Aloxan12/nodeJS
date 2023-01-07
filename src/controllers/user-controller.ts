@@ -101,12 +101,12 @@ export const userController = {
             const {id} = req.params;
             req.files?.file
             if(!!req.files?.file){
-                await uploadFile(req.files?.file)
+                const photoId = await uploadFile(req.files?.file)
+                const user = await userRespository.uploadUserAvatar(id, `http://drive.google.com/uc?export=view&id=${photoId}`);
             }
             // const img = req.files?.file as UploadedFile
             // let avatarName = Date.now() + ".jpg";
             // img.mv(path.resolve(__dirname, "..", "..", "src" , "tmp", avatarName));
-            // const user = await userRespository.uploadUserAvatar(id, avatarName);
             return res.status(200)  // res.json(user);
         } catch (e) {next(e);}
     }
