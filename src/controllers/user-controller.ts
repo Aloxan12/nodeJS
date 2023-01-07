@@ -103,11 +103,8 @@ export const userController = {
             if(!!req.files?.file){
                 const photoId = await uploadFile(req.files?.file)
                 const user = await userRespository.uploadUserAvatar(id, `http://drive.google.com/uc?export=view&id=${photoId}`);
+                return res.json(user);
             }
-            // const img = req.files?.file as UploadedFile
-            // let avatarName = Date.now() + ".jpg";
-            // img.mv(path.resolve(__dirname, "..", "..", "src" , "tmp", avatarName));
-            return res.status(200)  // res.json(user);
         } catch (e) {next(e);}
     }
 }
