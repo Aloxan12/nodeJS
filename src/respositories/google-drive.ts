@@ -13,7 +13,7 @@ const auth = new google.auth.GoogleAuth({
     scopes: SCOPES,
 });
 
-export const uploadFile = async (fileObject: any) => {
+export const uploadFile = async (fileObject: any): Promise<string | null> => {
     const bufferStream = new PassThrough();
     bufferStream.end(fileObject.data);
     const { data } = await google.drive({ version: "v3", auth }).files.create({
@@ -27,6 +27,5 @@ export const uploadFile = async (fileObject: any) => {
         },
         fields: "id,name",
     });
-    console.log(`Uploaded file data ${JSON.stringify(data.id)}`);
-    return data.id
+    return !!data.id ? data.id : null
 };

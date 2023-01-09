@@ -101,9 +101,13 @@ export const userController = {
             const {id} = req.params;
             req.files?.file
             if(!!req.files?.file){
-                const photoId = await uploadFile(req.files?.file)
-                const user = await userRespository.uploadUserAvatar(id, `http://drive.google.com/uc?export=view&id=${photoId}`);
-                return res.json(user);
+                const photoId: string | null = await uploadFile(req.files?.file)
+                if(!!photoId){
+                    const user = await userRespository.uploadUserAvatar(id, `http://drive.google.com/uc?export=view&id=${photoId}`);
+                    return res.json(user);
+                }else{
+                    res.status(400).send({message: 'Ошибка при загрузке файла'})
+                }
             }
         } catch (e) {next(e);}
     }
