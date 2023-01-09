@@ -73,24 +73,25 @@ export const userRespository = {
     async getAllUsers(search:string, limit:string | number, page:string | number) {
         page = +page || 1
         limit = +limit || 10
-        let offset = +page * +limit - +limit
-        const usersBD = await UserModel.find()
-
+        let offset: number = page * limit - limit
+        const total = await UserModel.find().count()
+        const searchParams = !!search ? {email: {'$regex': search}} : {}
+        const usersBD = await UserModel.find(searchParams).skip(offset).limit(limit)
         const filterUser = usersBD.filter((user: IUserDtoBD) => {
             return !!search ? user.email.toLowerCase().includes(search.toLowerCase()) : true
         })
 
-        const users = filterUser.map((user: IUserDtoBD) => ({
+        const users = usersBD.map((user: IUserDtoBD) => ({
             id: user._id,
             email: user.email,
             role: user.role,
             isActivated: user.isActivated,
             avatar: user.avatar,
             status: user.status
-        })).slice(offset,offset + limit)
+        }))
 
         return {
-            count: filterUser.length,
+            count: total,
             results: users
         }
     },
