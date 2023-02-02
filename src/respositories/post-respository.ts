@@ -31,7 +31,9 @@ export const postRespository = {
                     avatar:post.author.avatar
                 },
                 likeCount: post.likes.length,
-                isLike: !!post.likes.find(item => item === userId)
+                isLike: !!post.likes.find((item) => {
+                    return item === userId
+                })
             })).slice(offset,Number(offset) + Number(limit))
         }
     },
@@ -44,6 +46,16 @@ export const postRespository = {
         return {
             post: postDto
         }
+    },
+    async swichLikePost(id: string, userId: string){
+        const post = await PostModel.findOne({_id: id})
+        const foundLike = post.likes.find((item: string) => item === userId)
+        const isLike = foundLike ? post.likes.filter((item: string)=> item !== userId ) : [...post.likes, userId]
+        await post.update({
+            likes: isLike
+        })
+
+        return {status: 200, message:'Лайк поставлен/удален', isLike}
     },
     async deletePost(id: string){
         const post = await PostModel.deleteOne({_id: id})

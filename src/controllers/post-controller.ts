@@ -28,6 +28,16 @@ export const postController = {
             next(e)
         }
     },
+    async swichLikePost(req: Request, res: Response, next: NextFunction){
+        try {
+            const {id} = req.params
+            const userId = req.user.id
+            const post = await postRespository.swichLikePost(id, userId)
+            return res.json(post)
+        }catch (e){
+            next(e)
+        }
+    },
     async deletePost(req: Request, res: Response, next: NextFunction){
         try {
             const {id} = req.params
