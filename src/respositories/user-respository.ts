@@ -77,9 +77,6 @@ export const userRespository = {
         const total = await UserModel.find().count()
         const searchParams = !!search ? {email: {'$regex': search}} : {}
         const usersBD = await UserModel.find(searchParams).skip(offset).limit(limit)
-        const filterUser = usersBD.filter((user: IUserDtoBD) => {
-            return !!search ? user.email.toLowerCase().includes(search.toLowerCase()) : true
-        })
 
         const users = usersBD.map((user: IUserDtoBD) => ({
             id: user._id,
