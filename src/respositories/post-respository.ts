@@ -10,7 +10,7 @@ import { PostModel } from "../models/post-model"
 import { IPostDto, IPostDtoBD, PostDto } from "../dtos/post-dto"
 
 export const postRespository = {
-    async getAllPosts(search: string, limit: string | number, page: string | number){
+    async getAllPosts(search: string, limit: string | number, page: string | number, userId: string){
         page = page || 1
         limit = limit || 5
         let offset = +page * +limit - +limit
@@ -30,6 +30,8 @@ export const postRespository = {
                     email:post.author.email,
                     avatar:post.author.avatar
                 },
+                likeCount: post.likes.length,
+                isLike: !!post.likes.find(item => item === userId)
             })).slice(offset,Number(offset) + Number(limit))
         }
     },
@@ -37,7 +39,7 @@ export const postRespository = {
         if(postText.length > 5000){
             throw ApiError.BadRequest(`Текст не олжен привышать 5000 символов`)
         }
-        const post = await PostModel.create({postText, author, publicDate: new Date()})
+        const post = await PostModel.create({postText, author, publicDate: new Date(), likes:[]})
         const postDto = new PostDto(post)
         return {
             post: postDto
