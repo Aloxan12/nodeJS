@@ -8,12 +8,8 @@ import fs from 'fs' ;
 import {UploadedFile} from 'express-fileupload';
 import { postRespository } from '../respositories/post-respository';
 
-interface PostRequestType extends Request{
-    user: {id: string}
-}
-
 export const postController = {
-    async getPosts(req: PostRequestType, res: Response, next: NextFunction){
+    async getPosts(req: Request, res: Response, next: NextFunction){
         try {
             const { search, limit, page } = req.query
             const userId = req.user.id
