@@ -6,7 +6,7 @@ import {userRespository} from '../respositories/user-respository';
 import path from "path";
 import fs from 'fs' ;
 import {UploadedFile} from 'express-fileupload';
-import { uploadFile } from '../respositories/google-drive';
+import {uploadFile} from '../respositories/google-drive';
 
 export const userController = {
     async registration(req: Request, res: Response, next: NextFunction) {
@@ -18,7 +18,7 @@ export const userController = {
                 );
             }
             const {email, password, role} = req.body;
-            
+
             const userData = await userRespository.registration(email, password, role);
             res.setHeader("refreshToken", userData.refreshToken);
             return res.json(userData);
@@ -65,7 +65,7 @@ export const userController = {
 
     async getAllUsers(req: Request, res: Response, next: NextFunction) {
         try {
-            const { search, limit, page } = req.query;
+            const {search, limit, page} = req.query;
             const usersData = await userRespository.getAllUsers(search as string, limit as string, page as string);
             return res.json(usersData);
         } catch (e) {
@@ -99,15 +99,17 @@ export const userController = {
         try {
             const {id} = req.params;
             req.files?.file
-            if(!!req.files?.file){
+            if (!!req.files?.file) {
                 const photoId: string | null = await uploadFile(req.files?.file)
-                if(!!photoId){
+                if (!!photoId) {
                     const user = await userRespository.uploadUserAvatar(id, `http://drive.google.com/uc?export=view&id=${photoId}`);
                     return res.json(user);
-                }else{
+                } else {
                     res.status(400).send({message: 'Ошибка при загрузке файла'})
                 }
             }
-        } catch (e) {next(e);}
+        } catch (e) {
+            next(e);
+        }
     }
 }

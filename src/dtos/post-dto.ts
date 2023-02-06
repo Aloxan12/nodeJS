@@ -1,11 +1,11 @@
-import { IUserDto } from "./user-dto";
+import {IUserDto} from "./user-dto";
 
 export enum RoleType {
     'ADMIN' = 'ADMIN',
     'USER' = 'USER',
 }
 
-export interface IPostDtoBD{
+export interface IPostDtoBD {
     postText: string
     author: IUserDto
     publicDate: string
@@ -13,7 +13,7 @@ export interface IPostDtoBD{
     likes: string[]
 }
 
-export interface IPostDto{
+export interface IPostDto {
     postText: string
     author: IUserDto
     publicDate: string
