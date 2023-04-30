@@ -30,10 +30,10 @@ export const postRespository = {
                     email:post.author.email,
                     avatar:post.author.avatar
                 },
-                likes: post.likes,
+                likes: post.likes.map(({email, avatar, id}) => ({email, avatar, id})),
                 likeCount: post.likes.length,
-                isLike: !!post.likes.find((item) => {
-                    return item === userId
+                isLike: !!post.likes.find((user) => {
+                    return user.id === userId
                 })
             })).slice(offset,Number(offset) + Number(limit))
         }

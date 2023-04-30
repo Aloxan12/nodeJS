@@ -10,7 +10,7 @@ export interface IPostDtoBD {
     author: IUserDto
     publicDate: string
     _id: string
-    likes: string[]
+    likes: IUserDto[]
 }
 
 export interface IPostDto {
