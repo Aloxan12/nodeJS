@@ -14,7 +14,7 @@ export const postRespository = {
         page = page || 1
         limit = limit || 5
         let offset = +page * +limit - +limit
-        const posts: IPostDtoBD[] = await PostModel.find().populate('author');
+        const posts: IPostDtoBD[] = await PostModel.find().populate('author').populate('likes');
         const filterPosts = posts.filter(post => {
             return !!search ? post.postText.toLowerCase().includes(search.toLowerCase()) : true
         }).reverse()
