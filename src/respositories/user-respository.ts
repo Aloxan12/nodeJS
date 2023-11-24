@@ -1,11 +1,8 @@
 import {ApiError} from "../exeptions/api-error"
 import {UserModel} from "../models/user-model"
 import bcrypt from "bcrypt"
-import {productsCollection, ProductType} from "./dbMongo"
-import {mailRepository} from "./mail-repository"
 import {tokenRepository} from "./token-repository"
 import {IUserDto, RoleType, UserDto, IUserDtoBD} from "../dtos/user-dto"
-import mongodb from 'mongodb'
 
 export const userRespository = {
     async registration(email: string, password: string, role: RoleType) {
@@ -13,9 +10,7 @@ export const userRespository = {
         if (!!candidate) {
             throw ApiError.BadRequest(`Пользователь с таким почтовым адресом - ${email}  уже существует`)
         }
-        console.log('password', password)
         const hashPassword = await bcrypt.hash(password, 3)
-        console.log('hashPassword', hashPassword)
         const activationLink = Date.now().toString()
         const user = await UserModel.create({email, password: hashPassword, activationLink, role})
         // await mailRepository.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)

@@ -4,7 +4,7 @@ import { userRouter } from './routers/user-router'
 import cors from 'cors'
 import { runDb } from './respositories/dbMongo'
 import { authRouter } from './routers/auth-router'
-import expressFileupload, {UploadedFile} from 'express-fileupload'
+import expressFileupload  from 'express-fileupload'
 import path from 'path'
 import { postRouter } from './routers/post-router'
 
