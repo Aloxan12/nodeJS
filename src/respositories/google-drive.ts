@@ -6,17 +6,23 @@ import {google} from 'googleapis'
 const KEYFILEPATH = path.join(__dirname,'..', '..', "credentials.json");
 const SCOPES = ["https://www.googleapis.com/auth/drive"];
 
+const credentials = {
+    "type": process.env.type || '',
+    "project_id": process.env.project_id || '',
+    "private_key_id": process.env.private_key_id || '',
+    "private_key": process.env.private_key?.replace(/\\n/g, '\n') || '',
+    "client_email": process.env.client_email || '',
+    "client_id": process.env.client_id || '',
+    "auth_uri": process.env.auth_uri || '',
+    "token_uri": process.env.token_uri || '',
+    "auth_provider_x509_cert_url": process.env.auth_provider_x509_cert_url || '',
+    "client_x509_cert_url": process.env.client_x509_cert_url || ''
+};
 
 const auth = new google.auth.GoogleAuth({
     // keyFile: KEYFILEPATH,
-    credentials:{
-        type: process.env.type || '',
-        quota_project_id: process.env.project_id || '',
-        private_key: process.env.private_key || '',
-        client_email: process.env.client_email || '',
-        client_id: process.env.client_id || '',
-        token_url: process.env.token_uri || '',
-    },
+    projectId: process.env.project_id,
+    credentials,
     scopes: SCOPES,
 });
 
