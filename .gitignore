@@ -3,5 +3,5 @@ node_modules
 dist
 yarn-error.log
 .env
-
-src/respositories/credentials.json
+credentials.json
+yarn.lock
