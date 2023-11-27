@@ -27,8 +27,11 @@ app.use('/products', productRouter)
 app.use('/users', userRouter)
 app.use('/posts', postRouter)
 
+const KEYFILEPATH = path.join(__dirname, "credentials.json");
+
 const startApp = async ()=>{
     try{
+        console.log('KEYFILEPATH', KEYFILEPATH)
         await runDb()
         app.listen(port, () => {
             console.log(`Example app listening on port ${port}`)
