@@ -45,6 +45,7 @@ export const userRespository = {
         const token = await tokenRepository.removeToken(refreshToken)
         return token
     },
+
     async refresh(refreshToken: string) {
         if (!refreshToken) {
             throw ApiError.UnauthorizedError()

@@ -1,11 +1,7 @@
 import {Request, Response, NextFunction} from 'express'
 import {validationResult} from 'express-validator'
 import {ApiError} from '../exeptions/api-error'
-import {UserModel} from '../models/user-model';
 import {userRespository} from '../respositories/user-respository';
-import path from "path";
-import fs from 'fs' ;
-import {UploadedFile} from 'express-fileupload';
 import {uploadFile} from '../respositories/google-drive';
 
 export const userController = {
@@ -19,9 +15,9 @@ export const userController = {
             }
             const {email, password, role} = req.body;
 
-            const userData = await userRespository.registration(email, password, role);
-            res.setHeader("refreshToken", userData.refreshToken);
-            return res.json(userData);
+            const {refreshToken, ...userData}  = await userRespository.registration(email, password, role);
+            res.cookie("refreshToken", refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+             return res.json(userData);
         } catch (e) {
             next(e);
         }
@@ -29,9 +25,8 @@ export const userController = {
     async login(req: Request, res: Response, next: NextFunction) {
         try {
             const {email, password} = req.body;
-            const userData = await userRespository.login(email, password);
-
-            res.setHeader("refreshToken", userData.refreshToken);
+            const {refreshToken, ...userData} = await userRespository.login(email, password);
+            res.cookie("refreshToken", refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
             return res.json(userData);
         } catch (e) {
             next(e);
@@ -40,10 +35,9 @@ export const userController = {
 
     async logout(req: Request, res: Response, next: NextFunction) {
         try {
-            const {refreshtoken} = req.headers;
-
-            const token = await userRespository.logout(refreshtoken as string);
-            res.removeHeader("refreshToken");
+            const { refreshToken } = req.cookies;
+            const token = await userRespository.logout(refreshToken as string);
+            res.clearCookie("refreshToken");
             return res.json(token);
         } catch (e) {
             next(e);
@@ -52,11 +46,9 @@ export const userController = {
 
     async refresh(req: Request, res: Response, next: NextFunction) {
         try {
-            const {refreshtoken} = req.headers;
-
-            const userData = await userRespository.refresh(refreshtoken as string);
-
-            res.setHeader("refreshToken", userData.refreshToken);
+            const { refreshToken } = req.cookies;
+            const {refreshToken: refreshTokenNew, ...userData}  = await userRespository.refresh(refreshToken as string);
+            res.setHeader("refreshToken", refreshTokenNew);
             return res.json(userData);
         } catch (e) {
             next(e);
