@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.resolve(__dirname, '..', 'src', "tmp")));
-app.use(cors({origin: 'http://localhost:3000/',credentials: true}))
+app.use(cors({origin: ['http://localhost:3000', 'http://localhost:3000/*'],credentials: true}))
 
 app.use(express.urlencoded({extended: true}))
 
