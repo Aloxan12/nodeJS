@@ -48,7 +48,7 @@ export const userRespository = {
 
     async refresh(refreshToken: string) {
         if (!refreshToken) {
-            throw ApiError.UnauthorizedError()
+            throw ApiError.UnauthorizedError('refreshToken' + refreshToken,)
         }
         const userData: IUserDto = tokenRepository.validateRefreshToken(refreshToken) as IUserDto
         const tokenFromDb = await tokenRepository.findToken(refreshToken)
