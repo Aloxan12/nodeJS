@@ -46,10 +46,12 @@ export const userController = {
 
     async refresh(req: Request, res: Response, next: NextFunction) {
         try {
-            const { refreshToken } = req.cookies;
-            const {refreshToken: refreshTokenNew, ...userData}  = await userRespository.refresh(refreshToken as string);
-            res.cookie("refreshToken", refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
-            return res.json(userData);
+            const {refreshToken} = req.cookies;
+            const refreshToken2 = req.cookies['refreshToken'];
+            return {refreshToken, refreshToken2, cooki: req.cookies}
+            // const {refreshToken: refreshTokenNew, ...userData}  = await userRespository.refresh(refreshToken as string);
+            // res.cookie("refreshToken", refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+            // return res.json(userData);
         } catch (e) {
             next(e);
         }
