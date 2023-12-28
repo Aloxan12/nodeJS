@@ -12,10 +12,13 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         if(!accessToken){
             return next(ApiError.UnauthorizedError())
         }
-
-        const userData = tokenRepository.validateAccessToken(accessToken)
+        let userData = tokenRepository.validateAccessToken(accessToken)
         if(!userData){
-            return next(ApiError.UnauthorizedError())
+            const { refreshToken } = req.cookies
+            userData = tokenRepository.validateRefreshToken(refreshToken)
+            if(!userData){
+                return next(ApiError.UnauthorizedError())
+            }
         }
         // @ts-ignore
         req.user = userData
