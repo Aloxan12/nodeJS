@@ -1,4 +1,4 @@
-import {MongoClient, ObjectId, ServerApiVersion} from 'mongodb'
+import { MongoClient, ServerApiVersion } from 'mongodb'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
