@@ -35,8 +35,8 @@ const startApp = async ()=>{
         app.listen(port, () => {
             console.log(`Example app listening on port ${port}`)
         })
-    }catch {
-        console.log('error')
+    }catch (error) {
+        console.error('Error starting the app:', error);
     }
 }
 
