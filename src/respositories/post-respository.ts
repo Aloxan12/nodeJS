@@ -2,7 +2,7 @@ import {ApiError} from "../exeptions/api-error"
 import { PostModel } from "../models/post-model"
 import { IPostDtoBD, PostDto } from "../dtos/post-dto"
 
-export const postRespository = {
+export const postRepository = {
     async getAllPosts(search: string, limit: string | number, page: string | number, userId: string){
         page = page || 1
         limit = limit || 5
@@ -13,6 +13,8 @@ export const postRespository = {
         }).reverse()
 
         return {
+            page,
+            limit,
             count: filterPosts.length,
             results: filterPosts.map((post)=> ({
                 id: post._id,
@@ -41,7 +43,7 @@ export const postRespository = {
             post: postDto
         }
     },
-    async swichLikePost(id: string, userId: string){
+    async switchLikePost(id: string, userId: string){
         const post = await PostModel.findOne({_id: id})
         const foundLike = post.likes.find((item: string) => item === userId)
         const isLike = foundLike ? post.likes.filter((item: string)=> item !== userId ) : [...post.likes, userId]
@@ -49,7 +51,7 @@ export const postRespository = {
             likes: isLike
         })
 
-        return {status: 200, message:'Лайк поставлен/удален', isLike}
+        return { ...post, isLike, }
     },
     async deletePost(id: string){
         const post = await PostModel.deleteOne({_id: id})

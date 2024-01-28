@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express'
 import {validationResult} from 'express-validator'
 import {ApiError} from '../exeptions/api-error'
-import {userRespository} from '../respositories/user-respository';
+import {userRepository} from '../respositories/user-respository';
 import {uploadFile} from '../respositories/google-drive';
 
 export const userController = {
@@ -15,7 +15,7 @@ export const userController = {
             }
             const {email, password, role} = req.body;
 
-            const {refreshToken, ...userData}  = await userRespository.registration(email, password, role);
+            const {refreshToken, ...userData}  = await userRepository.registration(email, password, role);
             res.cookie("refreshToken", refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'none', secure: true});
              return res.json(userData);
         } catch (e) {
@@ -25,7 +25,7 @@ export const userController = {
     async login(req: Request, res: Response, next: NextFunction) {
         try {
             const {email, password} = req.body;
-            const {refreshToken, ...userData} = await userRespository.login(email, password);
+            const {refreshToken, ...userData} = await userRepository.login(email, password);
             res.cookie("refreshToken", refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'none', secure: true});
             return res.json(userData);
         } catch (e) {
@@ -36,7 +36,7 @@ export const userController = {
     async logout(req: Request, res: Response, next: NextFunction) {
         try {
             const { refreshToken } = req.cookies;
-            const token = await userRespository.logout(refreshToken as string);
+            const token = await userRepository.logout(refreshToken as string);
             res.clearCookie("refreshToken");
             return res.json(token);
         } catch (e) {
@@ -47,9 +47,7 @@ export const userController = {
     async refresh(req: Request, res: Response, next: NextFunction) {
         try {
             const {refreshToken} = req.cookies;
-            // const refreshToken2 = req.cookies['refreshToken'];
-            // return res.json({refreshToken, refreshToken2, cooki: req.cookies})
-            const {refreshToken: refreshTokenNew, ...userData}  = await userRespository.refresh(refreshToken as string);
+            const {refreshToken: refreshTokenNew, ...userData}  = await userRepository.refresh(refreshToken as string);
             res.cookie("refreshToken", refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'none', secure: true});
             return res.json(userData);
         } catch (e) {
@@ -60,7 +58,7 @@ export const userController = {
     async getAllUsers(req: Request, res: Response, next: NextFunction) {
         try {
             const {search, limit, page} = req.query;
-            const usersData = await userRespository.getAllUsers(search as string, limit as string, page as string);
+            const usersData = await userRepository.getAllUsers(search as string, limit as string, page as string);
             return res.json(usersData);
         } catch (e) {
             next(e);
@@ -70,7 +68,7 @@ export const userController = {
     async getUserDetail(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params;
-            const users = await userRespository.getUserDetail(id);
+            const users = await userRepository.getUserDetail(id);
             return res.json(users);
         } catch (e) {
             next(e);
@@ -82,7 +80,7 @@ export const userController = {
             const {id} = req.params;
             const user = req.body;
 
-            const users = await userRespository.updateUserDetail(id, user);
+            const users = await userRepository.updateUserDetail(id, user);
             return res.json(users);
         } catch (e) {
             next(e);
@@ -96,7 +94,7 @@ export const userController = {
             if (!!req.files?.file) {
                 const photoId: string | null = await uploadFile(req.files?.file)
                 if (!!photoId) {
-                    const user = await userRespository.uploadUserAvatar(id, `https://drive.google.com/uc?export=view&id=${photoId}`);
+                    const user = await userRepository.uploadUserAvatar(id, `https://drive.google.com/uc?export=view&id=${photoId}`);
                     return res.json(user);
                 } else {
                     res.status(400).send({message: 'Ошибка при загрузке файла'})

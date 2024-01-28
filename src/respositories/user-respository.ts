@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 import {tokenRepository} from "./token-repository"
 import {IUserDto, RoleType, UserDto, IUserDtoBD} from "../dtos/user-dto"
 
-export const userRespository = {
+export const userRepository = {
     async registration(email: string, password: string, role: RoleType) {
         const candidate = await UserModel.findOne({email})
         if (!!candidate) {
