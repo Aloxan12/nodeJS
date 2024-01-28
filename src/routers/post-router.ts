@@ -13,5 +13,5 @@ const titleValidation = body('title').trim().isLength({
 
 postRouter.get('/', authMiddleware, postController.getPosts)
 postRouter.post('/', authMiddleware, postController.createPosts)
-postRouter.patch('/:id/like', authMiddleware, postController.swichLikePost)
+postRouter.patch('/:id/like', authMiddleware, postController.switchLikePost)
 postRouter.delete('/:id', authMiddleware, postController.deletePost)

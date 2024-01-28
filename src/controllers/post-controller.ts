@@ -21,7 +21,7 @@ export const postController = {
             next(e)
         }
     },
-    async swichLikePost(req: Request, res: Response, next: NextFunction) {
+    async switchLikePost(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params
             const userId = req.user.id

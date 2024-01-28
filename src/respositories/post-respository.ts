@@ -50,8 +50,9 @@ export const postRepository = {
         await post.update({
             likes: isLike
         })
+        const postDto = new PostDto(post)
 
-        return { ...post, isLike, }
+        return { post: postDto }
     },
     async deletePost(id: string){
         const post = await PostModel.deleteOne({_id: id})
