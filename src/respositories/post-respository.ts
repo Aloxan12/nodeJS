@@ -21,7 +21,6 @@ export const postRepository = {
         return {
             prevPage,
             nextPage,
-            limit,
             count: totalCount,
             results: formatPosts(filterPosts.slice(offset, offset + limit), userId)
         };
