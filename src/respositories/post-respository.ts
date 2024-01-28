@@ -26,6 +26,7 @@ export const postRepository = {
             results: formatPosts(filterPosts.slice(offset, offset + limit), userId)
         };
     },
+
     async createPost(postText: string, author: number,){
         if(postText.length > 5000){
             throw ApiError.BadRequest(`Текст не должен привышать 5000 символов`)
@@ -36,6 +37,7 @@ export const postRepository = {
             post: postDto
         }
     },
+
     async switchLikePost(id: string, userId: string){
         const post = await PostModel.findOne({_id: id})
         const foundLike = post.likes.find((item: string) => item === userId)
@@ -47,9 +49,9 @@ export const postRepository = {
 
         return { post: postDto }
     },
+
     async deletePost(id: string){
         const post = await PostModel.deleteOne({_id: id})
-
         return {status: 204, message:'Пост успешно удален', post}
     }
 }
