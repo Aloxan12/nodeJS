@@ -4,9 +4,9 @@ import { IPostDtoBD, PostDto } from "../dtos/post-dto"
 
 export const postRepository = {
     async getAllPosts(search: string, limit: string | number, page: string | number, userId: string){
-        page = page || 1
-        limit = limit || 5
-        let offset = +page * +limit - +limit
+        page = Number(page || 1)
+        limit = Number(limit || 5)
+        let offset = Number(page * limit - limit)
         const posts: IPostDtoBD[] = await PostModel.find().populate('author').populate('likes');
         const filterPosts = posts.filter(post => {
             return !!search ? post.postText.toLowerCase().includes(search.toLowerCase()) : true
@@ -30,7 +30,7 @@ export const postRepository = {
                 isLike: !!post.likes.find((user) => {
                     return user.id === userId
                 })
-            })).slice(offset,Number(offset) + Number(limit))
+            })).slice(offset,offset + limit)
         }
     },
     async createPost(postText: string, author: number,){
