@@ -44,7 +44,7 @@ export const postRepository = {
         await post.update({
             likes: isLike
         })
-        const postDto = new PostDto(post)
+        const postDto = {...new PostDto(post),isLike, likeCount: post.likes.length}
 
         return { post: postDto }
     },
