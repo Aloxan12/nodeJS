@@ -38,13 +38,13 @@ export const postRepository = {
     },
 
     async switchLikePost(id: string, userId: string){
-        const post = await PostModel.findOne({_id: id})
+        const post = await PostModel.findOne({_id: id}).populate('author')
         const foundLike = post.likes.find((item: string) => item === userId)
         const isLike = foundLike ? post.likes.filter((item: string)=> item !== userId ) : [...post.likes, userId]
         await post.update({
             likes: isLike
         })
-        const postDto = {...new PostDto(post),isLike: !foundLike, likeCount: isLike.length}
+        const postDto = {...new PostDto(post),isLike: !foundLike, likeCount: isLike.length }
 
         return { post: postDto }
     },
