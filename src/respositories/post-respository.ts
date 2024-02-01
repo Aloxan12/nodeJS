@@ -34,7 +34,7 @@ export const postRepository = {
         await post.populate({
             path: 'author',
             select: '-password -__v -activationLink',
-        }).execPopulate();
+        });
         const postDto = new PostDto(post)
         return {
             post: postDto
