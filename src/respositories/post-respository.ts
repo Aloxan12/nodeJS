@@ -31,6 +31,10 @@ export const postRepository = {
             throw ApiError.BadRequest(`Текст не должен привышать 5000 символов`)
         }
         const post = await PostModel.create({postText, author, publicDate: new Date(), likes:[]})
+        await post.populate({
+            path: 'author',
+            select: '-password -__v -activationLink',
+        }).execPopulate();
         const postDto = new PostDto(post)
         return {
             post: postDto
