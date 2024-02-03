@@ -30,12 +30,12 @@ export const postRepository = {
         if(postText.length > 5000){
             throw ApiError.BadRequest(`Текст не должен привышать 5000 символов`)
         }
-        const post = await PostModel.create({postText, author, publicDate: new Date(), likes:[], likeCount: 0, isLike: false})
+        const post = await PostModel.create({postText, author, publicDate: new Date(), likes:[]})
         await post.populate({
             path: 'author',
             select: '-password -__v -activationLink',
         });
-        const postDto = new PostDto(post)
+        const postDto = {...new PostDto(post),isLike: false, likeCount: 0  }
         return {
             post: postDto
         }
@@ -49,11 +49,9 @@ export const postRepository = {
         const foundLike = post.likes.find((item: string) => item === userId)
         const isLike = foundLike ? post.likes.filter((item: string)=> item !== userId ) : [...post.likes, userId]
         await post.update({
-            likes: isLike,
-            isLike: !foundLike,
-            likeCount: isLike.length
+            likes: isLike
         })
-        const postDto = new PostDto(post)
+        const postDto = {...new PostDto(post),isLike: !foundLike, likeCount: isLike.length }
 
         return { post: postDto }
     },
