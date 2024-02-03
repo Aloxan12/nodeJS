@@ -11,6 +11,8 @@ export interface IPostDtoBD {
     publicDate: string
     _id: string
     likes: IUserDto[]
+    isLike: boolean
+    likeCount: number
 }
 
 export interface IPostDto {
@@ -29,6 +31,8 @@ export class PostDto {
     publicDate;
     id;
     likes;
+    isLike;
+    likeCount;
 
     constructor(model: IPostDtoBD) {
         this.postText = model.postText
@@ -36,5 +40,7 @@ export class PostDto {
         this.author = model.author
         this.publicDate = model.publicDate
         this.likes = model.likes
+        this.isLike = model.isLike
+        this.likeCount = model.likeCount
     }
 }
