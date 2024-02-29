@@ -8,6 +8,7 @@ import expressFileupload  from 'express-fileupload'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import { postRouter } from './routers/post-router'
+import { Server } from 'socket.io';
 
 const app = express()
 const port = process.env.PORT || 5000
