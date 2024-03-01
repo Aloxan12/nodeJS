@@ -5,8 +5,9 @@ export const setupSocketServer = (server: any) => {
         cors: {
             credentials: true,
             origin: ['http://localhost:3000', 'https://aloxan12.github.io'],
-            methods: ["GET", "POST"]
-        }
+            methods: ["GET", "POST"],
+        },
+        allowEIO3: true
     });
 
     io.on('connection', (socket) => {
