@@ -7,6 +7,7 @@ export const setupSocketServer = (server: any) => {
             origin: ['http://localhost:3000', 'https://aloxan12.github.io'],
             methods: ["GET", "POST"],
         },
+        pingTimeout: 60000,
         allowEIO3: true
     });
 
