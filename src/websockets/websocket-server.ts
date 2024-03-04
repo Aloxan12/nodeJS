@@ -13,9 +13,11 @@ export const setupSocketServer = (server: any) => {
 
     io.on('connection', (socket) => {
         console.log('a user connected');
-
-        socket.on('disconnect', () => {
-            console.log('user disconnected');
+        socket.on('message', () => {
+            socket.emit('message', ['1', '2', '3']);
         });
+        // socket.on('disconnect', () => {
+        //     console.log('user disconnected');
+        // });
     });
 };

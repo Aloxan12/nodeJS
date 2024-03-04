@@ -42,4 +42,4 @@ const startApp = async ()=>{
     }
 }
 
-startApp()
+startApp().catch((error)=> console.log('error', error))
