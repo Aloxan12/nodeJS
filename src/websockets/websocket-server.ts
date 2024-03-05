@@ -4,7 +4,7 @@ export const setupSocketServer = (server: any) => {
     const io = new Server(server, {
         cors: {
             credentials: true,
-            origin: ['http://localhost', 'http://localhost:3000', 'https://aloxan12.github.io'],
+            origin: 'http://localhost:3000',
             methods: ["GET", "POST"],
         },
         transports: ['websocket', 'polling'],
@@ -16,8 +16,8 @@ export const setupSocketServer = (server: any) => {
         socket.on('message', () => {
             socket.emit('message', ['1', '2', '3']);
         });
-        // socket.on('disconnect', () => {
-        //     console.log('user disconnected');
-        // });
+        socket.on('disconnect', () => {
+            console.log('user disconnected');
+        });
     });
 };
