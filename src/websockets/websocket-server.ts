@@ -1,23 +1,20 @@
-import { Server } from 'socket.io';
+import { Server as WebSocketServer } from 'ws';
 
-export const setupSocketServer = (server: any) => {
-    const io = new Server(server, {
-        cors: {
-            credentials: true,
-            origin: 'http://localhost:3000',
-            methods: ["GET", "POST"],
-        },
-        transports: ['websocket', 'polling'],
-        allowEIO3: true
-    });
+export const setupWebSocketServer = (server: any) => {
+    console.log('server', server)
+    const wsServer = new WebSocketServer({ server });
 
-    io.on('connection', (socket) => {
-        console.log('a user connected');
-        socket.on('message', () => {
-            socket.emit('message', ['1', '2', '3']);
-        });
-        socket.on('disconnect', () => {
-            console.log('user disconnected');
-        });
-    });
+    wsServer.on('connection', ws => {
+        ws.send('connection established')
+        ws.on('close', () => console.log('Client has disconnected!'))
+        ws.on('message', data => {
+            wsServer.clients.forEach(client => {
+                console.log(`distributing message: ${data}`)
+                client.send(`${data}`)
+            })
+        })
+        ws.onerror = function () {
+            console.log('websocket error')
+        }
+    })
 };

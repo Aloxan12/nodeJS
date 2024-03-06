@@ -8,10 +8,10 @@ import expressFileupload  from 'express-fileupload'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import { postRouter } from './routers/post-router'
-import {setupSocketServer} from "./websockets/websocket-server";
+import {setupWebSocketServer} from "./websockets/websocket-server";
 
 const app = express()
-const port = process.env.PORT || 5000
+export const port = process.env.PORT || 5000
 
 app.use(expressFileupload())
 app.use(express.json())
@@ -36,7 +36,7 @@ const startApp = async ()=>{
         const server = app.listen(port, () => {
             console.log(`Example app listening on port ${port}`)
         })
-        setupSocketServer(server)
+        setupWebSocketServer(server)
     }catch (error) {
         console.error('Error starting the app:', error);
     }
