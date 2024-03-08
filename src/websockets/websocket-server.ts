@@ -1,15 +1,20 @@
 import { Server as WebSocketServer } from 'ws';
 
+const message = {
+    id: 1,
+    event: 'connection',
+    username: 'alex',
+    text: '1 est',
+};
+
 export const setupWebSocketServer = (server: any) => {
-    console.log('server', server)
     const wsServer = new WebSocketServer({ server });
 
     wsServer.on('connection', ws => {
-        ws.send('connection established')
+        ws.send(JSON.stringify(message))
         ws.on('close', () => console.log('Client has disconnected!'))
         ws.on('message', data => {
             wsServer.clients.forEach(client => {
-                console.log(`distributing message: ${data}`)
                 client.send(`${data}`)
             })
         })
