@@ -1,4 +1,5 @@
 import { Server as WebSocketServer } from 'ws';
+import { Server as HttpServer } from 'http';
 
 const message = {
     id: 1,
@@ -7,8 +8,8 @@ const message = {
     text: '1 est',
 };
 
-export const setupWebSocketServer = (server: any) => {
-    const wsServer = new WebSocketServer({ server });
+export const setupWebSocketServer = (httpServer: HttpServer) => {
+    const wsServer = new WebSocketServer({ server: httpServer });
 
     wsServer.on('connection', ws => {
         ws.send(JSON.stringify(message))
