@@ -1,5 +1,4 @@
 import { Server as WebSocketServer } from 'ws';
-import { Server as HttpServer } from 'http';
 
 const message = {
     id: 1,
@@ -8,7 +7,7 @@ const message = {
     text: '1 est',
 };
 
-export const setupWebSocketServer = (httpServer: HttpServer) => {
+export const setupWebSocketServer = (httpServer: any) => {
     const wsServer = new WebSocketServer({ server: httpServer });
 
     wsServer.on('connection', ws => {
