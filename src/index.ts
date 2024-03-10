@@ -36,7 +36,7 @@ const startApp = async ()=>{
         const server = app.listen(port, () => {
             console.log(`Example app listening on port ${port}`)
         })
-        setupWebSocketServer(server)
+        await setupWebSocketServer(server)
     }catch (error) {
         console.error('Error starting the app:', error);
     }
