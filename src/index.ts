@@ -8,7 +8,7 @@ import expressFileupload  from 'express-fileupload'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import { postRouter } from './routers/post-router'
-import {setupWebSocketServer} from "./websockets/websocket-server";
+import { setupWebSocketServer} from "./websockets/websocket-server";
 
 const app = express()
 export const port = process.env.PORT || 5000
