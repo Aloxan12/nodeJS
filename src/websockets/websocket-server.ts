@@ -1,4 +1,4 @@
-// import { Server as WebSocketServer } from 'ws';
+import { Server as WebSocketServer } from 'ws';
 
 const message = {
     id: 1,
@@ -8,18 +8,18 @@ const message = {
 };
 
 export const setupWebSocketServer = (httpServer: any) => {
-    // const wsServer = new WebSocketServer({ server: httpServer });
-    //
-    // wsServer.on('connection', ws => {
-    //     ws.send(JSON.stringify(message))
-    //     ws.on('close', () => console.log('Client has disconnected!'))
-    //     ws.on('message', data => {
-    //         wsServer.clients.forEach(client => {
-    //             client.send(`${data}`)
-    //         })
-    //     })
-    //     ws.onerror = function () {
-    //         console.log('websocket error')
-    //     }
-    // })
+    const wsServer = new WebSocketServer({ server: httpServer });
+
+    wsServer.on('connection', ws => {
+        ws.send(JSON.stringify(message))
+        ws.on('close', () => console.log('Client has disconnected!'))
+        ws.on('message', data => {
+            wsServer.clients.forEach(client => {
+                client.send(`${data}`)
+            })
+        })
+        ws.onerror = function () {
+            console.log('websocket error')
+        }
+    })
 };
