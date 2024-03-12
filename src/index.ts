@@ -33,7 +33,7 @@ app.use('/posts', postRouter)
 const startApp = async ()=>{
     try{
         await runDb()
-        app.listen(port, () => {
+        const server = app.listen(port, () => {
             console.log(`Example app listening on port ${port}`)
         })
         setupWebSocketServer(server)
