@@ -90,7 +90,9 @@ export const userRepository = {
     },
 
     async getUserDetail(id: string) {
+        console.log('id', id)
         const user = await UserModel.findOne({_id: id})
+        console.log('user', user)
         if (!!user) {
             return {
                 id: user._id,

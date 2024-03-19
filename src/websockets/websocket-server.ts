@@ -4,7 +4,7 @@ const message = {
     id: 1,
     event: 'connection',
     username: 'alex',
-    text: '1 est',
+    text: 'Добро пожаловать в чат',
 };
 
 export const setupWebSocketServer = (httpServer: any) => {
@@ -13,9 +13,9 @@ export const setupWebSocketServer = (httpServer: any) => {
     wsServer.on('connection', ws => {
         ws.send(JSON.stringify(message))
         ws.on('close', () => console.log('Client has disconnected!'))
-        ws.on('message', data => {
+        ws.on('message',  (message) => {
             wsServer.clients.forEach(client => {
-                client.send(`${data}`)
+                client.send(`${message}`)
             })
         })
         ws.onerror = function () {
