@@ -3,7 +3,9 @@ import { Server as WebSocketServer } from 'ws';
 const message = {
     id: 1,
     event: 'greeting',
-    username: '',
+    user: {
+        name: ''
+    },
     text: 'Добро пожаловать в чат',
 };
 
