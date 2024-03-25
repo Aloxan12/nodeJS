@@ -1,41 +1,33 @@
 import {IUserDto} from "./user-dto";
 
-export interface IPostDtoBD {
-    postText: string
-    author: IUserDto
-    publicDate: string
+export interface IMessageDtoBD {
     _id: string
-    likes: IUserDto[]
-    isLike: boolean
-    likeCount: number
-}
-
-export interface IPostDto {
-    postText: string
+    text: string
     author: IUserDto
     publicDate: string
-    id: string
-    likes: string[]
-    likeCount: number
-    isLike: boolean
+    chatId: string
 }
 
-export class PostDto {
-    postText;
+export interface IMessageDto {
+    id: string
+    text: string
+    author: IUserDto
+    publicDate: string
+    chatId: string
+}
+
+export class MessageDto {
+    id;
+    text;
     author;
     publicDate;
-    id;
-    likes;
-    isLike;
-    likeCount;
+    chatId;
 
-    constructor(model: IPostDtoBD) {
-        this.postText = model.postText
+    constructor(model: IMessageDtoBD) {
+        this.text = model.text
+        this.chatId = model.chatId
         this.id = model._id
         this.author = model.author
         this.publicDate = model.publicDate
-        this.likes = model.likes
-        this.isLike = model.isLike
-        this.likeCount = model.likeCount
     }
 }
