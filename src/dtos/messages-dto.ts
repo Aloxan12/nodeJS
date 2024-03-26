@@ -11,7 +11,7 @@ export interface IMessageDtoBD {
 export interface IMessageDto {
     id: string
     text: string
-    author: IUserDto
+    author: string
     publicDate: string
     chatId: string
 }

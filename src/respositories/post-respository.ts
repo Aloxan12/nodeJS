@@ -1,6 +1,6 @@
 import {ApiError} from "../exeptions/api-error"
 import { PostModel } from "../models/post-model"
-import { IPostDtoBD, PostDto } from "../dtos/post-dto"
+import { IPostDtoBD } from "../dtos/post-dto"
 import {filterAndSortPosts, formatPosts} from "./helpers/postHelpers";
 
 export const postRepository = {
@@ -35,7 +35,7 @@ export const postRepository = {
             path: 'author',
             select: '-password -__v -activationLink',
         });
-        const postDto = {...new PostDto(post),isLike: false, likeCount: 0  }
+        const postDto = {...post,isLike: false, likeCount: 0  }
         return {
             post: postDto
         }
@@ -46,12 +46,12 @@ export const postRepository = {
             path: 'author',
             select: '-password -__v -activationLink',
         })
-        const foundLike = post.likes.find((item: string) => item === userId)
-        const isLike = foundLike ? post.likes.filter((item: string)=> item !== userId ) : [...post.likes, userId]
-        await post.update({
+        const foundLike = post?.likes.find((item: string) => item === userId)
+        const isLike = foundLike ? post?.likes.filter((item: string)=> item !== userId ) : post ? [...post?.likes, userId] : [userId]
+        await post?.update({
             likes: isLike
         })
-        const postDto = {...new PostDto(post),isLike: !foundLike, likeCount: isLike.length }
+        const postDto = {...post,isLike: !foundLike, likeCount: isLike?.length }
 
         return { post: postDto }
     },

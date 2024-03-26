@@ -1,6 +1,6 @@
 import {IUserDto} from "./user-dto";
 
-export interface IPostDtoBD {
+export interface IChatDtoBD {
     postText: string
     author: IUserDto
     publicDate: string
@@ -10,7 +10,7 @@ export interface IPostDtoBD {
     likeCount: number
 }
 
-export interface IPostDto {
+export interface IChatDto {
     postText: string
     author: IUserDto
     publicDate: string
@@ -20,7 +20,7 @@ export interface IPostDto {
     isLike: boolean
 }
 
-export class PostDto {
+export class ChatDto {
     postText;
     author;
     publicDate;
@@ -29,7 +29,7 @@ export class PostDto {
     isLike;
     likeCount;
 
-    constructor(model: IPostDtoBD) {
+    constructor(model: IChatDtoBD) {
         this.postText = model.postText
         this.id = model._id
         this.author = model.author
