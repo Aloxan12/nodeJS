@@ -4,7 +4,6 @@ import { IPostDtoBD } from "../dtos/post-dto"
 import {filterAndSortPosts, formatPosts} from "./helpers/postHelpers";
 
 export const postRepository = {
-
     async getAllPosts(search: string, limit: string | number, page: string | number, userId: string){
         page = Number(page || 1)
         limit = Number(limit || 5)
