@@ -24,16 +24,15 @@ export const chatRepository = {
         };
     },
 
-    async createChat(postText: string, author: number,){
+    async createChat(users: string[]){
 
-        const post = await ChatModel.create({postText, author, publicDate: new Date(), likes:[]})
-        await post.populate({
-            path: 'author',
+        const chat = await ChatModel.create({users})
+        await chat.populate({
+            path: 'users',
             select: '-password -__v -activationLink',
         });
-        const postDto = {...post,isLike: false, likeCount: 0  }
         return {
-            post: postDto
+            chat
         }
     },
 }
