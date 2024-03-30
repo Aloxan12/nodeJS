@@ -7,7 +7,7 @@ export const chatController = {
         try {
             const {search, limit, page} = req.query
             const userId = req.user.id
-            const chats = await chatRepository.getAllChats(search as string, limit as string, page as string)
+            const chats = await chatRepository.getAllChats(userId as string, search as string, limit as string, page as string)
             return res.json(chats)
         } catch (e) {
             next(e)
@@ -15,7 +15,7 @@ export const chatController = {
     },
     async createChat(req: Request, res: Response, next: NextFunction) {
         try {
-            const {users} = req.body
+            const { users } = req.body
             const chat = await chatRepository.createChat(users)
             return res.json(chat)
         } catch (e) {

@@ -7,5 +7,5 @@ import {chatController} from "../controllers/chat-controller";
 export const chatRouter = Router({})
 
 chatRouter.get('/', authMiddleware, chatController.getChatList)
-chatRouter.post('/', authMiddleware, postController.createPosts)
+chatRouter.post('/', authMiddleware, chatController.createChat)
 chatRouter.delete('/:id', authMiddleware, postController.deletePost)
