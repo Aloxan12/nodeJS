@@ -8,7 +8,7 @@ export const chatRepository = {
         limit = Number(limit || 5)
         let offset = Number(page * limit - limit)
         const chats: IChatDtoBD[] = await ChatModel.find().find({ 'users._id': userId }).populate('users');
-
+        console.log('chats', chats)
         const totalCount = chats.length;
         const totalPages = Math.ceil(totalCount / limit);
 
@@ -17,7 +17,6 @@ export const chatRepository = {
 
         const formatChatResult = formatChat(chats.slice(offset, offset + limit))
         console.log('formatChatResult', formatChatResult)
-        console.log('chats', chats)
         return {
             prevPage,
             nextPage,
