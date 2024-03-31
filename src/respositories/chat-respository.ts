@@ -1,5 +1,6 @@
 import { ChatModel } from "../models/chat-model";
 import {IChatDtoBD} from "../dtos/chat-dto";
+import {formatChat} from "./helpers/chatHelpers";
 
 export const chatRepository = {
     async getAllChats(userId: string, search: string, limit: string | number, page: string | number){
@@ -14,11 +15,14 @@ export const chatRepository = {
         const nextPage = page < totalPages ? page + 1 : null;
         const prevPage = page > 1 ? page - 1 : null ;
 
+        const formatChatResult = formatChat(chats.slice(offset, offset + limit))
+        console.log('formatChatResult', formatChatResult)
+        console.log('chats', chats)
         return {
             prevPage,
             nextPage,
             count: totalCount,
-            results: chats.slice(offset, offset + limit)
+            results: formatChatResult
         };
     },
 
@@ -29,6 +33,7 @@ export const chatRepository = {
             path: 'users',
             select: '-password -__v -activationLink',
         });
+
         return {
             chat
         }
