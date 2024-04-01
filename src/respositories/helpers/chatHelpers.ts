@@ -5,6 +5,15 @@ export function filterAndSortPosts(posts: IPostDtoBD[], search: string): IPostDt
     return posts.filter(post => !!search ? post.postText.toLowerCase().includes(search.toLowerCase()) : true);
 }
 
-export function formatChat(chats: IChatDtoBD[]) {
-    return chats.map(({_id, ...chat}) => ({...chat, id: _id, users: chat.users.map((_id, ...user) => ({...user, id: _id})) }));
-}
+export const formatChat =(chats: IChatDtoBD[]) => chats.map(chat => {
+        const formattedUsers = chat.users.map(user => ({
+            id: user._id,
+            email: user.email,
+            avatar: user.avatar,
+        }));
+
+        return {
+            id: chat._id,
+            users: formattedUsers,
+        };
+    });

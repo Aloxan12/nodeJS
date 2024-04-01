@@ -1,8 +1,8 @@
-import {IUserDto} from "./user-dto";
+import {IUserDto, IUserDtoBD} from "./user-dto";
 
 export interface IChatDtoBD {
     _id: string
-    users: IUserDto[]
+    users: IUserDtoBD[]
     dateLastMessage: string
 }
 
