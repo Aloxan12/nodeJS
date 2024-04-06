@@ -1,4 +1,14 @@
 import { Server as WebSocketServer } from 'ws';
+import {IUserDto} from "../dtos/user-dto";
+import {messageRepository} from "../respositories/message-respository";
+
+interface MessageType {
+    id: number,
+    event: 'connection' | 'message',
+    user: IUserDto
+    text: string
+}
+
 
 const message = {
     id: 1,
@@ -16,7 +26,12 @@ export const setupWebSocketServer = (httpServer: any) => {
         ws.send(JSON.stringify(message))
         ws.on('close', () => console.log('Client has disconnected!'))
 
-        ws.on('message',  (message) => {
+        ws.on('message',  async (message) => {
+            const messageObj: MessageType = JSON.parse(message.toString())
+
+            if(messageObj.event === 'message'){
+                await messageRepository.createMessage(messageObj.user.id, messageObj.text)
+            }
             wsServer.clients.forEach(client => {
                 client.send(`${message}`)
             })

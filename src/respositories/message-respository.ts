@@ -2,9 +2,10 @@ import { ChatModel } from "../models/chat-model";
 import {IChatDtoBD} from "../dtos/chat-dto";
 import {formatChat} from "./helpers/chatHelpers";
 import {ObjectId} from "mongodb";
+import {MessageModel} from "../models/message-model";
 
-export const chatRepository = {
-    async getAllChats(userId: string, search: string, limit: string | number, page: string | number){
+export const messageRepository = {
+    async getAllMessages(userId: string, search: string, limit: string | number, page: string | number){
         page = Number(page || 1)
         limit = Number(limit || 5)
         let offset = Number(page * limit - limit)
@@ -27,16 +28,21 @@ export const chatRepository = {
         };
     },
 
-    async createChat(users: string[]){
-
-        const chat = await ChatModel.create({users})
-        await chat.populate({
-            path: 'users',
-            select: '-password -__v -activationLink',
+    async createMessage(author: string, text: string, chatId?: string){
+        const newMessage = {
+            text,
+            author,
+            publicDate: new Date(),
+            chatId,
+        }
+        const message = await MessageModel.create(newMessage)
+        await message.populate({
+            path: 'author',
+            select: '-password -__v -activationLink -status',
         });
 
         return {
-            chat
+            message
         }
     },
 }
