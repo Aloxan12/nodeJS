@@ -1,7 +1,5 @@
-import { ChatModel } from "../models/chat-model";
 import {IChatDtoBD} from "../dtos/chat-dto";
 import {formatChat} from "./helpers/chatHelpers";
-import {ObjectId} from "mongodb";
 import {MessageModel} from "../models/message-model";
 
 export const messageRepository = {
@@ -10,21 +8,21 @@ export const messageRepository = {
         limit = Number(limit || 5)
         let offset = Number(page * limit - limit)
         // Фильтрация чатов по пользователю userId
-        const chats: IChatDtoBD[] = await ChatModel.find({ 'users': { $elemMatch: { $eq: new ObjectId(userId) } } }).populate('users')
+        const messages: IChatDtoBD[] = await MessageModel.find().populate('author')
 
-        const totalCount = chats.length;
+        const totalCount = messages.length;
         const totalPages = Math.ceil(totalCount / limit);
 
         const nextPage = page < totalPages ? page + 1 : null;
         const prevPage = page > 1 ? page - 1 : null ;
 
-        const formatChatResult = formatChat(chats.slice(offset, offset + limit))
+        const formatMessagesResult = formatChat(messages.slice(offset, offset + limit))
 
         return {
             prevPage,
             nextPage,
             count: totalCount,
-            results: formatChatResult
+            results: formatMessagesResult
         };
     },
 

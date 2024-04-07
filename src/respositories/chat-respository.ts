@@ -2,6 +2,7 @@ import { ChatModel } from "../models/chat-model";
 import {IChatDtoBD} from "../dtos/chat-dto";
 import {formatChat} from "./helpers/chatHelpers";
 import {ObjectId} from "mongodb";
+import {PostModel} from "../models/post-model";
 
 export const chatRepository = {
     async getAllChats(userId: string, search: string, limit: string | number, page: string | number){
@@ -38,5 +39,9 @@ export const chatRepository = {
         return {
             chat
         }
+    },
+    async deleteChat(id: string){
+        const chat = await PostModel.deleteOne({_id: id})
+        return {status: 204, message:'Пост успешно удален', chat}
     },
 }

@@ -1,5 +1,4 @@
 import {Request, Response, NextFunction} from 'express'
-import {postRepository} from '../respositories/post-respository';
 import {chatRepository} from "../respositories/chat-respository";
 
 export const chatController = {
@@ -22,10 +21,10 @@ export const chatController = {
             next(e)
         }
     },
-    async deletePost(req: Request, res: Response, next: NextFunction) {
+    async deleteChat(req: Request, res: Response, next: NextFunction) {
         try {
             const {id} = req.params
-            const post = await postRepository.deletePost(id as string)
+            const post = await chatRepository.deleteChat(id as string)
             return res.json(post)
         } catch (e) {
             next(e)

@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser'
 import { postRouter } from './routers/post-router'
 import { setupWebSocketServer} from "./websockets/websocket-server";
 import {chatRouter} from "./routers/chat-router";
+import {messageRouter} from "./routers/message-router";
 
 const app = express()
 export const port = process.env.PORT || 5000
@@ -31,6 +32,7 @@ app.use('/products', productRouter)
 app.use('/users', userRouter)
 app.use('/posts', postRouter)
 app.use('/chats', chatRouter)
+app.use('/messages', messageRouter)
 
 const startApp = async ()=>{
     try{
