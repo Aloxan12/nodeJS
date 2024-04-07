@@ -1,6 +1,6 @@
-import {IChatDtoBD} from "../dtos/chat-dto";
-import {formatChat} from "./helpers/chatHelpers";
 import {MessageModel} from "../models/message-model";
+import {formatMessage} from "./helpers/messageHelpers";
+import {IMessageDtoBD} from "../dtos/messages-dto";
 
 export const messageRepository = {
     async getAllMessages(userId: string, search: string, limit: string | number, page: string | number){
@@ -8,7 +8,7 @@ export const messageRepository = {
         limit = Number(limit || 5)
         let offset = Number(page * limit - limit)
         // Фильтрация чатов по пользователю userId
-        const messages: IChatDtoBD[] = await MessageModel.find().populate('author')
+        const messages: IMessageDtoBD[] = await MessageModel.find().populate('author')
 
         const totalCount = messages.length;
         const totalPages = Math.ceil(totalCount / limit);
@@ -16,7 +16,7 @@ export const messageRepository = {
         const nextPage = page < totalPages ? page + 1 : null;
         const prevPage = page > 1 ? page - 1 : null ;
 
-        const formatMessagesResult = formatChat(messages.slice(offset, offset + limit))
+        const formatMessagesResult = formatMessage(messages.slice(offset, offset + limit))
 
         return {
             prevPage,
@@ -33,7 +33,7 @@ export const messageRepository = {
             publicDate: new Date(),
             chatId,
         }
-        const message = await MessageModel.create(newMessage)
+        const message = await MessageModel.create({...newMessage})
         await message.populate({
             path: 'author',
             select: '-password -__v -activationLink -status',

@@ -28,7 +28,6 @@ export const setupWebSocketServer = (httpServer: any) => {
 
         ws.on('message',  async (message) => {
             const messageObj: MessageType = JSON.parse(message.toString())
-
             if(messageObj.event === 'message'){
                 await messageRepository.createMessage(messageObj.user.id, messageObj.text)
             }
