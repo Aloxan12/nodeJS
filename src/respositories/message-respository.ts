@@ -43,4 +43,8 @@ export const messageRepository = {
             message
         }
     },
+    async deleteMessage(id: string){
+        const chat = await MessageModel.deleteOne({_id: id})
+        return {status: 204, message:'Сообщение успешно удален', chat}
+    },
 }
