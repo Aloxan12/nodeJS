@@ -4,9 +4,9 @@ import {messageRepository} from "../respositories/message-respository";
 export const messageController = {
     async getMessageList(req: Request, res: Response, next: NextFunction) {
         try {
-            const {search, limit, page} = req.query
+            const {search, limit, page, chatId} = req.query
             const userId = req.user.id
-            const messages = await messageRepository.getAllMessages(userId as string, search as string, limit as string, page as string)
+            const messages = await messageRepository.getAllMessages(userId as string, search as string, limit as string, page as string, chatId as string)
             return res.json(messages)
         } catch (e) {
             next(e)

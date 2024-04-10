@@ -1,14 +1,15 @@
 import {MessageModel} from "../models/message-model";
 import {formatMessage} from "./helpers/messageHelpers";
 import {IMessageDtoBD} from "../dtos/messages-dto";
+import {ObjectId} from "mongodb";
 
 export const messageRepository = {
-    async getAllMessages(userId: string, search: string, limit: string | number, page: string | number){
+    async getAllMessages(userId: string, search: string, limit: string | number, page: string | number, chatId?: string){
         page = Number(page || 1)
         limit = Number(limit || 5)
         let offset = Number(page * limit - limit)
         // Фильтрация чатов по пользователю userId
-        const messages: IMessageDtoBD[] = await MessageModel.find().populate('author')
+        const messages: IMessageDtoBD[] = await MessageModel.find({ 'chatId': { $elemMatch: { $eq: new ObjectId(chatId) } } }).populate('author')
 
         const totalCount = messages.length;
         const totalPages = Math.ceil(totalCount / limit);
