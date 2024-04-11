@@ -3,9 +3,6 @@ import {formatMessage} from "./helpers/messageHelpers";
 import {IMessageDtoBD} from "../dtos/messages-dto";
 import {ObjectId} from "mongodb";
 
-interface QueryParams{
-    [key: string]: string | null
-}
 
 export const messageRepository = {
     async getAllMessages(userId: string, search: string, limit: string | number, page: string | number, chatId?: string){
@@ -13,11 +10,13 @@ export const messageRepository = {
         limit = Number(limit || 5)
         let offset = Number(page * limit - limit)
 
-        let query: QueryParams = { author: userId }
+        let query = MessageModel.find({ author: userId });
+
+        // Если есть chatId, добавляем фильтр по chatId, иначе фильтруем по null
         if (chatId) {
-            query = { ...query, chatId: chatId }
+            query.where('chatId').equals(chatId);
         } else {
-            query = { ...query, chatId: null }
+            query.where('chatId').equals(null);
         }
         // Фильтрация чатов по пользователю userId
         const messages: IMessageDtoBD[] = await MessageModel.find({ 'chatId': { $elemMatch: { $eq: new ObjectId(chatId) } } }).populate('author')
