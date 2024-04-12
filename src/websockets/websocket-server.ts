@@ -7,6 +7,7 @@ interface MessageType {
     event: 'connection' | 'message',
     user: IUserDto
     text: string
+    chatId: string
 }
 
 
@@ -29,7 +30,7 @@ export const setupWebSocketServer = (httpServer: any) => {
         ws.on('message',  async (message) => {
             const messageObj: MessageType = JSON.parse(message.toString())
             if(messageObj.event === 'message'){
-                await messageRepository.createMessage(messageObj.user.id, messageObj.text)
+                await messageRepository.createMessage(messageObj.user.id, messageObj.text, messageObj.chatId)
             }
             wsServer.clients.forEach(client => {
                 client.send(`${message}`)
