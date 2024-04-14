@@ -5,7 +5,7 @@ import {messageRepository} from "../respositories/message-respository";
 interface MessageType {
     id: number,
     event: 'connection' | 'message',
-    user: IUserDto
+    author: IUserDto
     text: string
     chatId: string
 }
@@ -30,7 +30,8 @@ export const setupWebSocketServer = (httpServer: any) => {
         ws.on('message',  async (message) => {
             const messageObj: MessageType = JSON.parse(message.toString())
             if(messageObj.event === 'message'){
-                await messageRepository.createMessage(messageObj.user.id, messageObj.text, messageObj.chatId)
+                console.log('meme')
+                await messageRepository.createMessage(messageObj.author?.id, messageObj.text, messageObj.chatId)
             }
             wsServer.clients.forEach(client => {
                 client.send(`${message}`)

@@ -9,7 +9,7 @@ export const messageRepository = {
         limit = Number(limit || 5)
         let offset = Number(page * limit - limit)
 
-        let query = MessageModel.find({ author: userId });
+        let query = MessageModel.find();
 
         // Если есть chatId, добавляем фильтр по chatId, иначе фильтруем по null
         if (chatId) {
@@ -17,6 +17,7 @@ export const messageRepository = {
         } else {
             query.where('chatId').equals(null);
         }
+        query.sort({ publicDate: -1 });
         // Фильтрация чатов по пользователю userId
         const messages: IMessageDtoBD[] = await query.populate('author');
 
