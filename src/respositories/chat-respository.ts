@@ -41,6 +41,6 @@ export const chatRepository = {
     },
     async deleteChat(id: string){
         const chat = await ChatModel.deleteOne({_id: id})
-        return {status: 204, message:'Пост успешно удален', chat}
+        return {status: 204, message:'Чат успешно удален', chat}
     },
 }
