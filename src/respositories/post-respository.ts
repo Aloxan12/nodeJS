@@ -34,7 +34,7 @@ export const postRepository = {
             path: 'author',
             select: '-password -__v -activationLink',
         });
-        const postDto = {...post,isLike: false, likeCount: 0  }
+        const postDto = {...post.toObject(), id: post._id, isLike: false, likeCount: 0  }
         return {
             post: postDto
         }
