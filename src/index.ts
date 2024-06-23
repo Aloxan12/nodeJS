@@ -11,6 +11,7 @@ import { postRouter } from './routers/post-router'
 import { setupWebSocketServer} from "./websockets/websocket-server";
 import {chatRouter} from "./routers/chat-router";
 import {messageRouter} from "./routers/message-router";
+import {Error} from "./middlewares/error-middleware";
 
 const app = express()
 export const port = process.env.PORT || 5000
@@ -21,7 +22,7 @@ app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.resolve(__dirname, '..', 'src', "tmp")));
 app.use(cors({origin: ['http://localhost:3000', 'http://localhost:3001', 'https://aloxan12.github.io'], credentials: true}))
-
+app.use(Error)
 app.use(express.urlencoded({extended: true}))
 
 app.get('/', (req: Request, res: Response) => {
