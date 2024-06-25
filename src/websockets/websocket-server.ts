@@ -1,6 +1,7 @@
 import { Server as WebSocketServer } from 'ws';
 import {IUserDto} from "../dtos/user-dto";
 import {messageRepository} from "../respositories/message-respository";
+import {ApiError} from "../exeptions/api-error";
 
 interface MessageType {
     id: number,
@@ -26,7 +27,7 @@ export const setupWebSocketServer = (httpServer: any) => {
             })
         })
         ws.onerror = function () {
-            console.log('websocket error')
+            throw ApiError.BadRequest('Произошла ошибка')
         }
     })
 };
