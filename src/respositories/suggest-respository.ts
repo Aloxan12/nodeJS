@@ -1,4 +1,10 @@
 import axios from 'axios';
+import crypto from 'crypto';
+
+function generateIdFromAddress(name: string, description: string, pos: string): string {
+    const input = `${name}||${description}||${pos}`;
+    return crypto.createHash('md5').update(input).digest('hex');
+}
 
 const YANDEX_GEOCODER_API = 'https://geocode-maps.yandex.ru/1.x/';
 const API_KEY = process.env.YANDEX_SUGGEST_API_KEY || '';
@@ -37,6 +43,7 @@ export const suggestRepository = {
             const results = slicedObjects.map((obj: any) => {
                 const geoObject = obj.GeoObject;
                 return {
+                    id: generateIdFromAddress(geoObject.name, geoObject.description, geoObject.Point.pos),
                     title: geoObject.name, // название объекта (улица, дом и т.п.)
                     address: geoObject.description, // более детальное описание (город, район)
                     position: geoObject.Point.pos.split(' ').map(Number), // [долгота, широта]
