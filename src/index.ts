@@ -12,16 +12,17 @@ import { setupWebSocketServer} from "./websockets/websocket-server";
 import {chatRouter} from "./routers/chat-router";
 import {messageRouter} from "./routers/message-router";
 import {Error} from "./middlewares/error-middleware";
+import {suggestRouter} from "./routers/suggest-router";
 
 const app = express()
 export const port = process.env.PORT || 5000
 
-app.use(expressFileupload())
-app.use(express.json())
-app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.resolve(__dirname, '..', 'src', "tmp")));
 app.use(cors({origin: ['http://localhost:3000','http://localhost:5173', 'http://localhost:3001', 'https://aloxan12.github.io'], credentials: true}))
+app.use(expressFileupload())
+app.use(express.json())
+app.use(cookieParser())
 app.use(Error)
 app.use(express.urlencoded({extended: true}))
 
@@ -34,7 +35,7 @@ app.use('/users', userRouter)
 app.use('/posts', postRouter)
 app.use('/chats', chatRouter)
 app.use('/messages', messageRouter)
-app.use('/suggest', messageRouter)
+app.use('/suggest', suggestRouter)
 
 const startApp = async ()=>{
     try{
