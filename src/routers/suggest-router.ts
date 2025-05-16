@@ -5,4 +5,4 @@ import {suggestController} from "../controllers/suggest-controller";
 
 export const suggestRouter = Router({})
 
-suggestRouter.get('/', authMiddleware, suggestController.getAddressByString)
+suggestRouter.get('/', suggestController.getAddressByString)
