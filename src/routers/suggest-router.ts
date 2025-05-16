@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {authMiddleware} from '../middlewares/auth-middleware';
+// import {authMiddleware} from '../middlewares/auth-middleware';
 import {suggestController} from "../controllers/suggest-controller";
 
 
