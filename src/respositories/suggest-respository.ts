@@ -9,7 +9,6 @@ export const suggestRepository = {
             throw new Error('Search query is required');
         }
 
-        // Формируем строку запроса для геокодера
         let geocode = search;
         if (city) {
             // Чтобы сузить поиск по городу, добавляем город в начало или конец запроса
@@ -27,7 +26,6 @@ export const suggestRepository = {
         try {
             const { data } = await axios.get(`${YANDEX_GEOCODER_API}?${params.toString()}`);
 
-            // Извлекаем найденные объекты из ответа
             const geoObjects = data.response.GeoObjectCollection.featureMember || [];
 
             // Применяем сдвиг offset и лимит
