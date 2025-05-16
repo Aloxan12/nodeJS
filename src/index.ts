@@ -21,7 +21,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.resolve(__dirname, '..', 'src', "tmp")));
-app.use(cors({origin: ['http://localhost:3000', 'http://localhost:3001', 'https://aloxan12.github.io'], credentials: true}))
+app.use(cors({origin: ['http://localhost:3000','http://localhost:5173', 'http://localhost:3001', 'https://aloxan12.github.io'], credentials: true}))
 app.use(Error)
 app.use(express.urlencoded({extended: true}))
 
@@ -34,6 +34,7 @@ app.use('/users', userRouter)
 app.use('/posts', postRouter)
 app.use('/chats', chatRouter)
 app.use('/messages', messageRouter)
+app.use('/suggest', messageRouter)
 
 const startApp = async ()=>{
     try{
