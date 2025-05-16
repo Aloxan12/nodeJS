@@ -3,16 +3,19 @@ import axios from 'axios';
 const YANDEX_GEOCODER_API = 'https://geocode-maps.yandex.ru/1.x/';
 const API_KEY = process.env.YANDEX_SUGGEST_API_KEY || '';
 
+const cache = new Map<string, any>();
+
 export const suggestRepository = {
     async getAddressByQuery(search: string, city?: string, limit: number = 10, offset: number = 0) {
         if (!search) {
             throw new Error('Search query is required');
         }
 
-        let geocode = search;
-        if (city) {
-            // Чтобы сузить поиск по городу, добавляем город в начало или конец запроса
-            geocode = `${city}, ${search}`;
+        let geocode = city ? `${city}, ${search}` : search;
+        const cacheKey = `${geocode}:${limit}:${offset}`;
+
+        if (cache.has(cacheKey)) {
+            return cache.get(cacheKey);
         }
 
         const params = new URLSearchParams({
@@ -41,6 +44,10 @@ export const suggestRepository = {
                 };
             });
 
+            cache.set(cacheKey, {
+                count: geoObjects.length,
+                results,
+            });
             return {
                 count: geoObjects.length,
                 results,
