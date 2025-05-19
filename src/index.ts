@@ -19,7 +19,7 @@ export const port = process.env.PORT || 5000
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.resolve(__dirname, '..', 'src', "tmp")));
-app.use(cors({origin: ['http://localhost:3000','http://localhost:5173', 'http://localhost:3001', 'https://aloxan12.github.io'], credentials: true}))
+app.use(cors({origin: ['https://intranet-web.dev1.kassirplus.ru', 'http://localhost:3000','http://localhost:5173', 'http://localhost:3001', 'https://aloxan12.github.io'], credentials: true}))
 app.use(expressFileupload())
 app.use(express.json())
 app.use(cookieParser())
